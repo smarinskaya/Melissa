@@ -5,9 +5,6 @@ module Melissa
   class AddrObj
     AddressStruct = Struct.new(:number, :pre_directional, :name, :suffix, :post_directional)
 
-    cattr_accessor :license
-
-    @@license = 'your_license_key'
     @@melissa_attributes = %w(
     Company
     LastName
@@ -149,7 +146,7 @@ module Melissa
 
       def self.with_mdaddr
         h_addr_lib = mdAddrCreate
-        mdAddrSetLicenseString(h_addr_lib, @@license)
+        mdAddrSetLicenseString(h_addr_lib, Melissa.config.addr_obj_license)
         mdAddrSetPathToUSFiles(h_addr_lib, "/opt/dqs/data")
         mdAddrInitializeDataFiles(h_addr_lib)
         yield h_addr_lib
@@ -167,7 +164,7 @@ module Melissa
 
       def initialize(opts)
         h_addr_lib = mdAddrCreate
-        mdAddrSetLicenseString(h_addr_lib, @@license)
+        mdAddrSetLicenseString(h_addr_lib, Melissa.config.addr_obj_license)
         mdAddrSetPathToUSFiles(h_addr_lib, "/opt/dqs/data")
         mdAddrInitializeDataFiles(h_addr_lib);
         # clear any properties from a previous call
