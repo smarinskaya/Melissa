@@ -88,9 +88,13 @@ module Melissa
         return '1234'
       end
 
+      def delivery_point
+        #TODO get delivery_point based on address attributes from .csv file
+      end
+
       #Mock
       def valid?
-        #we will mock delivery point only if zip code is present.
+        #TODO  I plan to return true, only if we have the record with matching attributes in .csv file
         return self.zip.present?
       end
 
@@ -100,7 +104,7 @@ module Melissa
       require 'ffi'
       extend FFI::Library
 
-      ffi_lib "/opt/dqs/AddrObj/libmdAddr.so" if defined?(FFI)
+      ffi_lib Melissa.config.path_to_addr_obj_library if defined?(FFI)
 
       attr_functions = @@melissa_attributes.map { |name| ["mdAddrGet#{name}".to_sym, [:pointer], :string] }
 
@@ -147,7 +151,7 @@ module Melissa
       def self.with_mdaddr
         h_addr_lib = mdAddrCreate
         mdAddrSetLicenseString(h_addr_lib, Melissa.config.addr_obj_license)
-        mdAddrSetPathToUSFiles(h_addr_lib, "/opt/dqs/data")
+        mdAddrSetPathToUSFiles(h_addr_lib, Melissa.config.path_to_data_files)
         mdAddrInitializeDataFiles(h_addr_lib)
         yield h_addr_lib
       ensure
@@ -158,6 +162,12 @@ module Melissa
         with_mdaddr { |h_addr_lib| mdAddrGetLicenseExpirationDate(h_addr_lib) }
       end
 
+      def self.days_until_license_expiration
+        #I compare Date objects. I think it is more accurate.
+        #self.license_expiration_date returns string in format: "YYYY-MM-DD"
+        (Date.parse(self.license_expiration_date) - DateTime.now.to_date).to_i
+      end
+
       def self.expiration_date
         with_mdaddr { |h_addr_lib| mdAddrGetExpirationDate(h_addr_lib) }
       end
@@ -165,7 +175,7 @@ module Melissa
       def initialize(opts)
         h_addr_lib = mdAddrCreate
         mdAddrSetLicenseString(h_addr_lib, Melissa.config.addr_obj_license)
-        mdAddrSetPathToUSFiles(h_addr_lib, "/opt/dqs/data")
+        mdAddrSetPathToUSFiles(h_addr_lib, Melissa.config.path_to_data_files)
         mdAddrInitializeDataFiles(h_addr_lib);
         # clear any properties from a previous call
         mdAddrClearProperties(h_addr_lib)

@@ -1,2 +1,4 @@
 AddrObj:
-  :license_key: "AddrObj license key"
+  :license_key:               "AddrObj license key"
+  :path_to_data_files:        "/opt/dqs/data"
+  :path_to_addr_obj_library:  "/opt/dqs/AddrObj/libmdAddr.so"

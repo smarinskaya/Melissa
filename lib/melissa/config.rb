@@ -6,7 +6,7 @@ module Melissa
 
   class Config
 
-    attr_accessor :mode, :addr_obj_license, :path_to_yaml
+    attr_accessor :mode, :addr_obj_license, :path_to_yaml, :path_to_data_files, :path_to_addr_obj_library
 
     def initialize
       #default values
@@ -22,14 +22,14 @@ module Melissa
       begin
         config_hash = YAML::load_file(melissa_yaml)
       rescue Errno::ENOENT
-        #log(:warning, "YAML configuration file couldn't be found. Using defaults.");
         raise "YAML configuration file couldn't be found. We need #{melissa_yaml}"
         return
       end
 
       #set attributes from yml
-      puts "config_hash: #{config_hash}"
-      @addr_obj_license = config_hash["AddrObj"][:license_key]
+      @addr_obj_license         = config_hash["AddrObj"][:license_key]
+      @path_to_data_files       = config_hash["AddrObj"][:path_to_data_files]
+      @path_to_addr_obj_library = config_hash["AddrObj"][:path_to_addr_obj_library]
     end
   end
 end
