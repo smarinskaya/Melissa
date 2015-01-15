@@ -1,5 +1,6 @@
 require "melissa/version"
 require "melissa/config"
+require "melissa/mock_validator"
 
 module Melissa
   autoload :AddrObj,    'melissa/addr_obj'

@@ -71,8 +71,9 @@ module Melissa
         #@urbanization        = opts[:urbanization] || ''
         @resultcodes = ['AS01']
         @address_type_string = 'Street'
+        @mock_validator = MockValidator.new
       end
-
+=begin
       #Mock
       def delivery_point_code
         return '55'
@@ -87,15 +88,16 @@ module Melissa
       def plus4
         return '1234'
       end
-
+=end
       def delivery_point
         #TODO get delivery_point based on address attributes from .csv file
+        return @mock_validator.get_delivery_point(self.address, self.suite, self.city, self.state, self.zip)
       end
 
       #Mock
       def valid?
         #TODO  I plan to return true, only if we have the record with matching attributes in .csv file
-        return self.zip.present?
+        return @mock_validator.valid?(self.address, self.suite, self.city, self.state, self.zip)
       end
 
       #### End of fake stuff ####
@@ -201,6 +203,10 @@ module Melissa
         # Make sure there is at least 1 good code and no bad codes
         (@resultcodes & @@good_codes).present? && (@resultcodes & @@bad_codes).empty?
       end
+
+      def delivery_point
+        "#{zip}#{plus4}#{delivery_point_code}"
+      end
     end
 
     def self.create_from_inquiry(i)
@@ -214,9 +220,7 @@ module Melissa
     end
 
 
-    def delivery_point
-      "#{zip}#{plus4}#{delivery_point_code}"
-    end
+
 
     def time_zone_offset
       GeoPoint.time_zone_offset(self.time_zone_code, self.state)
