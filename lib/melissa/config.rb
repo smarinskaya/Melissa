@@ -7,6 +7,7 @@ module Melissa
   class Config
 
     attr_accessor :mode, :addr_obj_license, :path_to_yaml, :path_to_data_files, :path_to_addr_obj_library
+    attr_accessor :geo_point_license, :path_to_geo_point_library
 
     def initialize
       #default values
@@ -27,9 +28,14 @@ module Melissa
       end
 
       #set attributes from yml
+      #For AddrObj
       @addr_obj_license         = config_hash["AddrObj"][:license_key]
       @path_to_data_files       = config_hash["AddrObj"][:path_to_data_files]
-      @path_to_addr_obj_library = config_hash["AddrObj"][:path_to_addr_obj_library]
+      @path_to_addr_obj_library = config_hash["AddrObj"][:path_to_library]
+      #For GeoPoint
+      @geo_point_license         = config_hash["GeoPoint"][:license_key]
+      @path_to_data_files        = config_hash["GeoPoint"][:path_to_data_files]
+      @path_to_geo_point_library = config_hash["GeoPoint"][:path_to_library]
     end
   end
 end

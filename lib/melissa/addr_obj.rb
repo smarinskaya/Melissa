@@ -73,30 +73,14 @@ module Melissa
         @address_type_string = 'Street'
         @mock_validator = MockValidator.new
       end
-=begin
-      #Mock
-      def delivery_point_code
-        return '55'
-      end
 
-      #Mock
-      def delivery_point_check_digit
-        self.city && (self.city.sum % 10).to_s
-      end
-
-      #Mock
-      def plus4
-        return '1234'
-      end
-=end
       def delivery_point
-        #TODO get delivery_point based on address attributes from .csv file
+        #getinng delivery_point based on address attributes from valid_addresses.csv file
         return @mock_validator.get_delivery_point(self.address, self.suite, self.city, self.state, self.zip)
       end
 
-      #Mock
       def valid?
-        #TODO  I plan to return true, only if we have the record with matching attributes in .csv file
+        #returns true, only if we have the record with matching attributes in valid_addresses.csv file
         return @mock_validator.valid?(self.address, self.suite, self.city, self.state, self.zip)
       end
 
@@ -167,7 +151,7 @@ module Melissa
       def self.days_until_license_expiration
         #I compare Date objects. I think it is more accurate.
         #self.license_expiration_date returns string in format: "YYYY-MM-DD"
-        (Date.parse(self.license_expiration_date) - DateTime.now.to_date).to_i
+        (Date.parse(self.license_expiration_date) - Date.today).to_i
       end
 
       def self.expiration_date
@@ -209,19 +193,6 @@ module Melissa
       end
     end
 
-    def self.create_from_inquiry(i)
-      new(:company => '',
-          :address => i.street_address_1,
-          :suite => i.street_address_2,
-          :city => i.city,
-          :state => i.state,
-          :zip => i.zip_code,
-          :urbanization => '')
-    end
-
-
-
-
     def time_zone_offset
       GeoPoint.time_zone_offset(self.time_zone_code, self.state)
     end
@@ -254,6 +225,6 @@ module Melissa
   end
 end
 
-#a = AddrObj.new(:address => 'valid street', :city => 'Tampa', :state => 'FL', :zip => '33626')
+#a = Melissa::AddrObj.new(:address => 'valid street', :city => 'Tampa', :state => 'FL', :zip => '33626')
 #puts "addr=#{a.address}"
 #puts "deliverypoint=#{a.delivery_point}"

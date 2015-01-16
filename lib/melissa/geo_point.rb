@@ -1,10 +1,9 @@
 require 'ffi'
+require "melissa/config"
 
 module Melissa
   class GeoPoint
     extend FFI::Library
-
-    @@license = 'valid_license_key'
 
     @@melissa_attributes = %w(
     Latitude
@@ -58,7 +57,7 @@ module Melissa
     }
 
     begin
-      ffi_lib '/opt/dqs/GeoObj/libmdGeo.so'
+      ffi_lib Melissa.config.path_to_geo_point_library
 
       attr_functions = @@melissa_attributes.map { |name| ["mdGeoGet#{name}".to_sym, [:pointer], :string] }
 
@@ -96,8 +95,8 @@ module Melissa
       def self.with_mdgeo
         mdGeo = mdGeoCreate
         mdGeoSetLicenseString(mdGeo, @@license)
-        mdGeoSetPathToGeoCodeDataFiles(mdGeo, "/opt/dqs/data")
-        mdGeoSetPathToGeoPointDataFiles(mdGeo, "/opt/dqs/data")
+        mdGeoSetPathToGeoCodeDataFiles(mdGeo, Melissa.config.path_to_data_files)
+        mdGeoSetPathToGeoPointDataFiles(mdGeo, Melissa.config.path_to_data_files)
         result = mdGeoInitializeDataFiles(mdGeo)
         if result != 0
           raise mdGeoGetInitializeErrorString(mdGeo)
@@ -111,23 +110,28 @@ module Melissa
         with_mdgeo { |mdGeo| mdGeoGetLicenseExpirationDate(mdGeo) }
       end
 
+      def self.days_until_license_expiration
+        #I compare Date objects. I think it is more accurate.
+        #self.license_expiration_date returns string in format: "YYYY-MM-DD"
+        (Date.parse(self.license_expiration_date) - Date.today).to_i
+      end
+
       def self.expiration_date
         with_mdgeo { |mdGeo| mdGeoGetExpirationDate(mdGeo) }
       end
 
-      def initialize(addr_obj_or_inquiry)
+      def initialize(addr_obj)
         @is_valid = false
-        if addr_obj_or_inquiry.kind_of?(Inquiry)
-          @addr_obj = AddrObj.create_from_inquiry(addr_obj_or_inquiry)
-        elsif addr_obj_or_inquiry.kind_of?(AddrObj)
-          @addr_obj = addr_obj_or_inquiry
+
+        if addr_obj.kind_of?(AddrObj)
+          @addr_obj = addr_obj
         else
-          raise "Invalid call to GeoPoint, unknown object #{addr_obj_or_inquiry.inspect}"
+          raise "Invalid call to GeoPoint, unknown object #{addr_obj.inspect}"
         end
         mdGeo = mdGeoCreate
-        mdGeoSetLicenseString(mdGeo, @@license)
-        mdGeoSetPathToGeoCodeDataFiles(mdGeo, "/opt/dqs/data")
-        mdGeoSetPathToGeoPointDataFiles(mdGeo, "/opt/dqs/data")
+        mdGeoSetLicenseString(mdGeo, Melissa.config.geo_point_license)
+        mdGeoSetPathToGeoCodeDataFiles(mdGeo, Melissa.config.path_to_data_files)
+        mdGeoSetPathToGeoPointDataFiles(mdGeo, Melissa.config.path_to_data_files)
         result = mdGeoInitializeDataFiles(mdGeo)
         if result != 0
           # TODO: Error condition
@@ -159,7 +163,7 @@ module Melissa
           end
         else
           fatals.each do |fatal_code|
-            Rails.logger.error("FATAL ERROR Melissa GeoPoint returned #{fatal_code}-#{@@codes[fatal_code]}")
+            raise "FATAL ERROR Melissa GeoPoint returned #{fatal_code}-#{@@codes[fatal_code]}"
           end
         end
 
@@ -167,9 +171,9 @@ module Melissa
         mdGeoDestroy(mdGeo) if mdGeo
       end
     rescue LoadError => e
-      raise if Rails.env.production?
+      raise if Melissa.config.mode == :prod?
 
-      Rails.logger.debug("Could not find geolib, gonna fake it")
+      puts "Could not find geolib, gonna fake it"
 
       #### Start of fake stuff ####
 
@@ -183,14 +187,13 @@ module Melissa
         EOS
       end
 
-      def initialize(addr_obj_or_inquiry)
+      def initialize(addr_obj)
         @is_valid = false
-        if addr_obj_or_inquiry.kind_of?(Inquiry)
-          @addr_obj = AddrObj.create_from_inquiry(addr_obj_or_inquiry)
-        elsif addr_obj_or_inquiry.kind_of?(AddrObj)
-          @addr_obj = addr_obj_or_inquiry
+
+        if addr_obj.kind_of?(AddrObj)
+          @addr_obj = addr_obj
         else
-          raise "Invalid call to GeoPoint, unknown object #{addr_obj_or_inquiry.inspect}"
+          raise "Invalid call to GeoPoint, unknown object #{addr_obj.inspect}"
         end
         @latitude = 27.850397
         @longitude = -82.659555
@@ -222,6 +225,6 @@ module Melissa
   end
 end
 
-#a = AddrObj.new(:address => 'valid street', :city => 'Tampa', :state => 'FL', :zip => '33626')
-#g = GeoPoint.new(a)
+#a = Melissa::AddrObj.new(:address => 'valid street', :city => 'Tampa', :state => 'FL', :zip => '33626')
+#g = Melissa::GeoPoint.new(a)
 #puts "lat,long=#{g.latitude},#{g.longitude}"
