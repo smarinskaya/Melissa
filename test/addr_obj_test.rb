@@ -63,6 +63,8 @@ class AddrObjTest < Minitest::Test
             :zip => '12345'
         )
 
+        puts "Invalid address: #{invalid_address.inspect}"
+
         assert_equal nil, invalid_address.delivery_point
       end
     end

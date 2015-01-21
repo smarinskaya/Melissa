@@ -71,18 +71,17 @@ module Melissa
         #@urbanization        = opts[:urbanization] || ''
         @resultcodes = ['AS01']
         @address_type_string = 'Street'
-        @mock_validator = MockValidator.new
       end
 
       def delivery_point
 
         #getinng delivery_point based on address attributes from valid_addresses.csv file
-        return @mock_validator.get_delivery_point(self.address, self.suite, self.city, self.state, self.zip)
+        return MockValidator.get_delivery_point(self.address, self.suite, self.city, self.state, self.zip)
       end
 
       def valid?
         #returns true, only if we have the record with matching attributes in valid_addresses.csv file
-        return @mock_validator.valid?(self.address, self.suite, self.city, self.state, self.zip)
+        return MockValidator.valid?(self.address, self.suite, self.city, self.state, self.zip)
       end
 
       #### End of fake stuff ####
