@@ -30,7 +30,12 @@ module Melissa
 
     def get_delivery_point(address, suite, city, state, zip)
       record = retrieve_record(address, suite, city, state, zip)
-      return record.delivery_point
+      puts "in get_delivery_point: #{record}, #{record.nil?}"
+      if record.nil?
+       return nil
+      else
+        return record.delivery_point
+      end
     end
 
     def retrieve_record(address, suite, city, state, zip)

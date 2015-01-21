@@ -75,6 +75,7 @@ module Melissa
       end
 
       def delivery_point
+
         #getinng delivery_point based on address attributes from valid_addresses.csv file
         return @mock_validator.get_delivery_point(self.address, self.suite, self.city, self.state, self.zip)
       end
