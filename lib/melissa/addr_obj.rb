@@ -53,7 +53,7 @@ module Melissa
     @@good_codes = ['AS01', 'AS02']
     @@bad_codes = ['AC02', 'AC03']
 
-    # Fake out Melissa data in Dev and (non-Linux) Test
+    # Fake out Melissa data in Dev and Test environments. For local tests, and for Release and Hotfix
     if Melissa.config.mode == :mock
       # Since we're faking it, create accessors that just return the corresponding opts value except the ones we dummy in the ctor
       @@melissa_attributes.each do |name|

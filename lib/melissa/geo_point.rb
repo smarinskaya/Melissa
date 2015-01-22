@@ -195,10 +195,10 @@ module Melissa
         else
           raise "Invalid call to GeoPoint, unknown object #{addr_obj.inspect}"
         end
-        @latitude = 27.850397
-        @longitude = -82.659555
-        @time_zone_code = '05'
-        @resultcodes = ['GS05']
+        @latitude = 36.20687
+        @longitude = -115.27857
+        @time_zone_code = '08'
+        @resultcodes = ['AS01']
         @is_valid = true
       end
 

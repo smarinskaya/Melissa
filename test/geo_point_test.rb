@@ -1,30 +1,36 @@
-=begin
-require File.expand_path(File.dirname(__FILE__) + "/../test_helper")
+#require File.expand_path(File.dirname(__FILE__) + "/../test_helper")
+require 'test_helper'
 
-class GeoPointTest < ActiveSupport::TestCase
+class GeoPointTest < Minitest::Test
 
-  context AddrObj do
-    setup do
+  describe Melissa::GeoPoint do
+    before do
       @uname = `uname`.chomp
       @is_linux = @uname == 'Linux'
     end
 
-    should 'handle valid data' do
-      skip "Not run under #{@uname}" unless @is_linux
-      addr_obj = AddrObj.new(
-         :address  => '1960 Glen Lakes Blvd',
-         :city     => 'St. Pete',
-         :state    => 'FL',
-         :zip      => '33702'
-      )
-      geo_point = GeoPoint.new(addr_obj)
-      assert geo_point.valid?
-      assert_includes  27.8..27.9, geo_point.latitude
-      assert_includes -82.7..-82.6, geo_point.longitude
-      offset = Time.now.in_time_zone('US/Eastern').dst? ? 240 : 300
-      assert_equal offset, geo_point.time_zone_offset
+    describe 'valid?' do
+      it 'handles valid data' do
+        skip "Not run under #{@uname}" unless @is_linux
+        addr_obj = Melissa::AddrObj.new(
+            :address => '2517 SURFWOOD DR',
+            :city => 'LAS VEGAS',
+            :state => 'NV',
+            :zip => '89128'
+        )
+        geo_point = Melissa::GeoPoint.new(addr_obj)
+        assert geo_point.valid?
+        assert_includes  36.2..36.3, geo_point.latitude
+        assert_includes -115.3..-115.2, geo_point.longitude
+        # offset = Time.now.in_time_zone('US/Eastern').dst? ? 240 : 300
+        # assert_equal offset, geo_point.time_zone_offset
+        #For the address above:
+        #g.time_zone_offset
+        #=> 480
+
+      end
     end
   end
 end
-=end
+
 
