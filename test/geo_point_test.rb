@@ -4,14 +4,9 @@ require 'test_helper'
 class GeoPointTest < Minitest::Test
 
   describe Melissa::GeoPoint do
-    before do
-      @uname = `uname`.chomp
-      @is_linux = @uname == 'Linux'
-    end
-
     describe 'valid?' do
       it 'handles valid data' do
-        skip "Not run under #{@uname}" unless @is_linux
+        skip "Not run in mock mode" unless Melissa.config.mode == :prod
         addr_obj = Melissa::AddrObj.new(
             :address => '2517 SURFWOOD DR',
             :city => 'LAS VEGAS',
@@ -32,7 +27,7 @@ class GeoPointTest < Minitest::Test
 
     describe 'number of days till licence expires' do
       it 'checks if we have more than 30 days till license expiration date' do
-        skip "Not run under #{@uname}" unless @is_linux
+        skip "Not run in mock mode" unless Melissa.config.mode == :prod
         valid_address = Melissa::AddrObj.new(
             :address => '2517 SURFWOOD DR',
             :city => 'LAS VEGAS',
