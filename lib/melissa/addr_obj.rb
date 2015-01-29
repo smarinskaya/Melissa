@@ -201,10 +201,10 @@ module Melissa
         # Make sure there is at least 1 good code and no bad codes
         (@resultcodes & @@good_codes).present? && (@resultcodes & @@bad_codes).empty?
       end
+    end
 
-      def delivery_point
-        "#{zip}#{plus4}#{delivery_point_code}"
-      end
+    def delivery_point
+      "#{zip}#{plus4}#{delivery_point_code}"
     end
 
     def time_zone_offset

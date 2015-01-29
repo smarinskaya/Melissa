@@ -18,7 +18,7 @@ module Melissa
       #     config.path_to_yaml = "My new path to yaml file"
       #   end
       @path_to_yml = File.dirname(__FILE__)
-      melissa_yaml = File.join(File.dirname(__FILE__),"melissa.yaml")
+      melissa_yaml = File.join(File.dirname(__FILE__),"../../config/melissa.yaml")
 
       begin
         config_hash = YAML::load_file(melissa_yaml)
