@@ -1,5 +1,6 @@
 require 'active_support/all' #TODO I can narrow down this
 require "melissa/config"
+require 'ffi'
 
 module Melissa
   class AddrObj
@@ -53,55 +54,104 @@ module Melissa
     @@good_codes = ['AS01', 'AS02']
     @@bad_codes = ['AC02', 'AC03']
 
-    # Fake out Melissa data in Dev and Test environments. For local tests, and for Release and Hotfix
-    if Melissa.config.mode == :mock
+    def self.get(attrs)
+      if Melissa.config.mode == :live
+        raise LoadError, "Melissa AddrObj was not loaded!" unless Melissa.config.addr_obj_library_loaded
+        AddrObjLive.new(attrs)
+      else
+        AddrObjMock.new(attrs)
+      end
+    end
 
-      # Since we're faking it, create accessors that just return the corresponding opts value except the ones we dummy in the ctor
-      @@melissa_attributes.each do |name|
-        name = name.underscore
-        class_eval <<-EOS
+    def initialize(attrs)
+      puts "In initialize for AddrObj"
+      puts "Melissa.config.mode: #{Melissa.config.mode}"
+      raise 'Dont call me'
+    end
+
+    def delivery_point
+      "#{zip}#{plus4}#{delivery_point_code}"
+    end
+
+    def time_zone_offset
+      GeoPoint.time_zone_offset(self.time_zone_code, self.state)
+    end
+
+    def address_struct
+      @address_struct = begin
+        if valid?
+          if address_type_string == 'Street' || address_type_string == 'Highrise'
+            match = self.address.match /^(\S+)\s?(N|NE|E|SE|S|SW|W|NW|) (\S.*?)\s?(N|NE|E|SE|S|SW|W|NW|)$/
+          end
+        elsif self.address
+          match = self.address.match /^(\d\S*)\s?(N|NE|E|SE|S|SW|W|NW|) (\S.*?)\s?(N|NE|E|SE|S|SW|W|NW|)$/
+        end
+        if match
+          # Parse out the optional suffix
+          street_match = match[3].match /(\S.*?)( [A-Za-z]{2,4}|)$/
+          if street_match
+            name, suffix = street_match[1], street_match[2].strip
+          else
+            name, suffix = match[3], ''
+          end
+          AddressStruct.new(match[1], match[2], name, suffix, match[4])
+        elsif self.address
+          AddressStruct.new('', '', self.address, '', '')
+        else
+          AddressStruct.new
+        end
+      end
+    end
+  end
+
+  # Fake out Melissa data in Dev and Test environments. For local tests, and for Release and Hotfix
+  class AddrObjMock < AddrObj
+
+    # Since we're faking it, create accessors that just return the corresponding opts value except the ones we dummy in the ctor
+    @@melissa_attributes.each do |name|
+      name = name.underscore
+      class_eval <<-EOS
         define_method(:#{name}) do
           @#{name} ||= (@opts[:#{name}] || nil)
         end
-        EOS
-      end
+      EOS
+    end
 
-      #Mock
-      def initialize(opts)
-        @opts = opts
-        #@urbanization        = opts[:urbanization] || ''
-        @resultcodes = ['AS01']
-        @address_type_string = 'Street'
-      end
+    #Mock
+    def initialize(opts)
+      @opts = opts
+      #@urbanization        = opts[:urbanization] || ''
+      @resultcodes = ['AS01']
+      @address_type_string = 'Street'
+    end
 
-      #Mock
-      def delivery_point_code
-        point_code = nil
-        point_code = self.zip[3..5] if self.zip.present?
-        return point_code
-      end
+    #Mock
+    def delivery_point_code
+      point_code = nil
+      point_code = self.zip[3..5] if self.zip.present?
+      return point_code
+    end
 
-      #Mock
-      def delivery_point_check_digit
-        self.city && (self.city.sum % 10).to_s
-      end
+    #Mock
+    def delivery_point_check_digit
+      self.city && (self.city.sum % 10).to_s
+    end
 
-      #Mock
-      def plus4
-        return '1234'
-      end
+    #Mock
+    def plus4
+      return '1234'
+    end
 
-      #Mock
-      def valid?
-        #we will mock delivery point if zip code is present.
-        return self.zip.present?
-      end
+    #Mock
+    def valid?
+      #we will mock delivery point if zip code is present.
+      return self.zip.present?
+    end
+  end
 
 
-      #### End of fake stuff ####
-
-    else
-      require 'ffi'
+  class AddrObjLive < AddrObj
+    begin
       extend FFI::Library
 
       ffi_lib Melissa.config.path_to_addr_obj_library if defined?(FFI)
@@ -173,6 +223,7 @@ module Melissa
       end
 
       def initialize(opts)
+        puts "In live mode"
         h_addr_lib = mdAddrCreate
         mdAddrSetLicenseString(h_addr_lib, Melissa.config.addr_obj_license)
         mdAddrSetPathToUSFiles(h_addr_lib, Melissa.config.path_to_data_files)
@@ -201,43 +252,15 @@ module Melissa
         # Make sure there is at least 1 good code and no bad codes
         (@resultcodes & @@good_codes).present? && (@resultcodes & @@bad_codes).empty?
       end
-    end
-
-    def delivery_point
-      "#{zip}#{plus4}#{delivery_point_code}"
-    end
-
-    def time_zone_offset
-      GeoPoint.time_zone_offset(self.time_zone_code, self.state)
-    end
-
-    def address_struct
-      @address_struct = begin
-        if valid?
-          if address_type_string == 'Street' || address_type_string == 'Highrise'
-            match = self.address.match /^(\S+)\s?(N|NE|E|SE|S|SW|W|NW|) (\S.*?)\s?(N|NE|E|SE|S|SW|W|NW|)$/
-          end
-        elsif self.address
-          match = self.address.match /^(\d\S*)\s?(N|NE|E|SE|S|SW|W|NW|) (\S.*?)\s?(N|NE|E|SE|S|SW|W|NW|)$/
-        end
-        if match
-          # Parse out the optional suffix
-          street_match = match[3].match /(\S.*?)( [A-Za-z]{2,4}|)$/
-          if street_match
-            name, suffix = street_match[1], street_match[2].strip
-          else
-            name, suffix = match[3], ''
-          end
-          AddressStruct.new(match[1], match[2], name, suffix, match[4])
-        elsif self.address
-          AddressStruct.new('', '', self.address, '', '')
-        else
-          AddressStruct.new
-        end
-      end
+    rescue LoadError => e
+      puts "Melissa AddrObj library was not loaded!"
+    else
+      Melissa.config.addr_obj_library_loaded = true
     end
   end
+
 end
+
 
 #a = Melissa::AddrObj.new(:address => 'valid street', :city => 'Tampa', :state => 'FL', :zip => '33626')
 #puts "addr=#{a.address}"

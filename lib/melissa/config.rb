@@ -6,12 +6,14 @@ module Melissa
 
   class Config
 
-    attr_accessor :mode, :addr_obj_license, :path_to_yaml, :path_to_data_files, :path_to_addr_obj_library
-    attr_accessor :geo_point_license, :path_to_geo_point_library
+    attr_accessor :mode, :addr_obj_license, :path_to_yaml, :path_to_data_files, :path_to_addr_obj_library, :addr_obj_library_loaded
+    attr_accessor :geo_point_license, :path_to_geo_point_library, :geo_point_library_loaded
 
     def initialize
       #default values
       @mode = :mock
+      @addr_obj_library_loaded  = false
+      @geo_point_library_loaded = false
 
       #you can configure @path_to_yaml from your code using:
       #   Melissa.configure do |config|
