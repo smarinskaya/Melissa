@@ -2,7 +2,7 @@ require 'yaml'
 
 module Melissa
 
-  MODES = [:mock, :prod]
+  MODES = [:mock, :live]
 
   class Config
 

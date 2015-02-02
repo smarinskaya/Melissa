@@ -93,7 +93,7 @@ module Melissa
 
       #Mock
       def valid?
-        #we will mock delivery point only if zip code is present.
+        #we will mock delivery point if zip code is present.
         return self.zip.present?
       end
 

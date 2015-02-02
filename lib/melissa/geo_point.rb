@@ -171,7 +171,7 @@ module Melissa
         mdGeoDestroy(mdGeo) if mdGeo
       end
     rescue LoadError => e
-      raise if Melissa.config.mode == :prod?
+      raise if Melissa.config.mode == :live
 
       puts "Could not find geolib, gonna fake it"
 

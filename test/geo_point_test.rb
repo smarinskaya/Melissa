@@ -6,7 +6,7 @@ class GeoPointTest < Minitest::Test
   describe Melissa::GeoPoint do
     describe 'valid?' do
       it 'handles valid data' do
-        skip "Not run in mock mode" unless Melissa.config.mode == :prod
+        skip "Not run in mock mode" unless Melissa.config.mode == :live
         addr_obj = Melissa::AddrObj.new(
             :address => '2517 SURFWOOD DR',
             :city => 'LAS VEGAS',
@@ -27,7 +27,7 @@ class GeoPointTest < Minitest::Test
 
     describe 'number of days till licence expires' do
       it 'checks if we have more than 30 days till license expiration date' do
-        skip "Not run in mock mode" unless Melissa.config.mode == :prod
+        skip "Not run in mock mode" unless Melissa.config.mode == :live
         valid_address = Melissa::AddrObj.new(
             :address => '2517 SURFWOOD DR',
             :city => 'LAS VEGAS',

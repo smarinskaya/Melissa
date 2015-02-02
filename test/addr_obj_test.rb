@@ -5,7 +5,7 @@ class AddrObjTest < Minitest::Test
 
     describe "valid?" do
       it 'handles valid data' do
-        skip "Not run in mock mode" unless Melissa.config.mode == :prod
+        skip "Not run in mock mode" unless Melissa.config.mode == :live
         valid_address = Melissa::AddrObj.new(
             :address => '2517 SURFWOOD DR',
             :city => 'LAS VEGAS',
@@ -19,7 +19,7 @@ class AddrObjTest < Minitest::Test
       end
 
       it 'flags invalid data' do
-        skip "Not run in mock mode" unless Melissa.config.mode == :prod
+        skip "Not run in mock mode" unless Melissa.config.mode == :live
         # Zip points to Schenectady, NY
         invalid_address = Melissa::AddrObj.new(
             :address => '123 Who Dr',
@@ -33,7 +33,7 @@ class AddrObjTest < Minitest::Test
 
     describe "delivery_point" do
       it 'sets delivery point for valid data' do
-        skip "Not run in mock mode" unless Melissa.config.mode == :prod
+        skip "Not run in mock mode" unless Melissa.config.mode == :live
         valid_address = Melissa::AddrObj.new(
             :address => '2517 SURFWOOD DR',
             :city => 'LAS VEGAS',
@@ -44,7 +44,7 @@ class AddrObjTest < Minitest::Test
       end
 
       it 'sets delivery point to nil for invalid data' do
-        skip "Not run in mock mode" unless Melissa.config.mode == :prod
+        skip "Not run in mock mode" unless Melissa.config.mode == :live
         # Zip points to Schenectady, NY
         invalid_address = Melissa::AddrObj.new(
             :address => '123 Who Dr',
@@ -58,7 +58,7 @@ class AddrObjTest < Minitest::Test
 
     describe 'number of days till licence expires' do
       it 'checks if we have more than 30 days till license expiration date' do
-        skip "Not run in mock mode" unless Melissa.config.mode == :prod
+        skip "Not run in mock mode" unless Melissa.config.mode == :live
         valid_address = Melissa::AddrObj.new(
             :address => '2517 SURFWOOD DR',
             :city => 'LAS VEGAS',
