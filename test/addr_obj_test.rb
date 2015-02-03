@@ -75,13 +75,13 @@ class AddrObjTest < Minitest::Test
       describe "valid?" do
         it 'handles valid data' do
           valid_address = Melissa.addr_obj(
-              :address => '10125 Parley Dr',
+              :address => '9802 Brompton Dr',
               :city => 'Tampa',
               :state => 'Fl',
               :zip => '33626'
           )
           assert valid_address.valid?
-          assert_equal '10125 Parley Dr', valid_address.address
+          assert_equal '9802 Brompton Dr', valid_address.address
           assert_equal 'Tampa', valid_address.city
           assert_equal '33626123426', valid_address.delivery_point
         end
@@ -101,7 +101,7 @@ class AddrObjTest < Minitest::Test
       describe "delivery_point" do
         it 'sets delivery point for valid data' do
           valid_address = Melissa.addr_obj(
-              :address => '10125 Parley Dr',
+              :address => '9802 Brompton Dr',
               :city => 'Tampa',
               :state => 'Fl',
               :zip => '33626'

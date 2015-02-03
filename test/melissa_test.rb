@@ -6,7 +6,7 @@ class MelissaTest < Minitest::Test
       it 'initializes AddrObjLive object' do
         skip "Not run in mock mode" unless Melissa.config.mode == :live
         valid_address = Melissa.addr_obj(
-            :address => '10125 Parley Dr',
+            :address => '9802 Brompton Dr',
             :city => 'Tampa',
             :state => 'Fl',
             :zip => '33626'
@@ -22,7 +22,7 @@ class MelissaTest < Minitest::Test
 
       it 'initializes AddrObjMock object' do
         valid_address = Melissa.addr_obj(
-            :address => '10125 Parley Dr',
+            :address => '9802 Brompton Dr',
             :city => 'Tampa',
             :state => 'Fl',
             :zip => '33626'
@@ -37,7 +37,7 @@ class MelissaTest < Minitest::Test
       it 'initializes GeoPointLive object' do
         skip "Not run in mock mode" unless Melissa.config.mode == :live
         valid_addr_obj = Melissa.addr_obj(
-            :address => '10125 Parley Dr',
+            :address => '9802 Brompton Dr',
             :city => 'Tampa',
             :state => 'Fl',
             :zip => '33626'
@@ -54,7 +54,7 @@ class MelissaTest < Minitest::Test
 
       it 'initializes GeoPointMock object' do
         valid_addr_obj = Melissa.addr_obj(
-            :address => '10125 Parley Dr',
+            :address => '9802 Brompton Dr',
             :city => 'Tampa',
             :state => 'Fl',
             :zip => '33626'
