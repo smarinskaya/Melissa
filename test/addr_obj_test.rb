@@ -4,21 +4,10 @@ class AddrObjTest < Minitest::Test
   describe Melissa::AddrObj do
 
     describe "live mode" do
-      it 'initializes AddrObjLive object' do
-        skip "Not run in mock mode" unless Melissa.config.mode == :live
-        valid_address = Melissa::AddrObj.get(
-            :address => '10125 Parley Dr',
-            :city => 'Tampa',
-            :state => 'Fl',
-            :zip => '33626'
-        )
-        assert_kind_of Melissa::AddrObjLive, valid_address
-      end
-
       describe "valid?" do
         it 'handles valid data' do
           skip "Not run in mock mode" unless Melissa.config.mode == :live
-          valid_address = Melissa::AddrObj.new(
+          valid_address = Melissa.addr_obj(
               :address => '2517 SURFWOOD DR',
               :city => 'LAS VEGAS',
               :state => 'NV',
@@ -33,7 +22,7 @@ class AddrObjTest < Minitest::Test
         it 'flags invalid data' do
           skip "Not run in mock mode" unless Melissa.config.mode == :live
           # Zip points to Schenectady, NY
-          invalid_address = Melissa::AddrObj.new(
+          invalid_address = Melissa.addr_obj(
               :address => '123 Who Dr',
               :city => 'WhoVille',
               :state => 'IN',
@@ -46,7 +35,7 @@ class AddrObjTest < Minitest::Test
       describe "delivery_point" do
         it 'sets delivery point for valid data' do
           skip "Not run in mock mode" unless Melissa.config.mode == :live
-          valid_address = Melissa::AddrObj.new(
+          valid_address = Melissa.addr_obj(
               :address => '2517 SURFWOOD DR',
               :city => 'LAS VEGAS',
               :state => 'NV',
@@ -58,7 +47,7 @@ class AddrObjTest < Minitest::Test
         it 'sets delivery point to nil for invalid data' do
           skip "Not run in mock mode" unless Melissa.config.mode == :live
           # Zip points to Schenectady, NY
-          invalid_address = Melissa::AddrObj.new(
+          invalid_address = Melissa.addr_obj(
               :address => '123 Who Dr',
               :city => 'WhoVille',
               :state => 'IN',
@@ -71,7 +60,7 @@ class AddrObjTest < Minitest::Test
       describe 'number of days till licence expires' do
         it 'checks if we have more than 30 days till license expiration date' do
           skip "Not run in mock mode" unless Melissa.config.mode == :live
-          valid_address = Melissa::AddrObj.new(
+          valid_address = Melissa.addr_obj(
               :address => '2517 SURFWOOD DR',
               :city => 'LAS VEGAS',
               :state => 'NV',
@@ -83,23 +72,9 @@ class AddrObjTest < Minitest::Test
     end
 
     describe "mock mode" do
-      before do
-        Melissa.config.mode = :mock
-      end
-
-      it 'initializes AddrObjMock object' do
-        valid_address = Melissa::AddrObj.get(
-            :address => '10125 Parley Dr',
-            :city => 'Tampa',
-            :state => 'Fl',
-            :zip => '33626'
-        )
-        assert_kind_of Melissa::AddrObjMock, valid_address
-      end
-
       describe "valid?" do
         it 'handles valid data' do
-          valid_address = Melissa::AddrObjMock.new(
+          valid_address = Melissa.addr_obj(
               :address => '10125 Parley Dr',
               :city => 'Tampa',
               :state => 'Fl',
@@ -113,7 +88,7 @@ class AddrObjTest < Minitest::Test
 
         it 'flags invalid data' do
           # Zip points to Schenectady, NY
-          invalid_address = Melissa::AddrObjMock.new(
+          invalid_address = Melissa.addr_obj(
               :address => '123 Who Dr',
               :city => 'WhoVille',
               :state => 'IN',
@@ -125,7 +100,7 @@ class AddrObjTest < Minitest::Test
 
       describe "delivery_point" do
         it 'sets delivery point for valid data' do
-          valid_address = Melissa::AddrObjMock.new(
+          valid_address = Melissa.addr_obj(
               :address => '10125 Parley Dr',
               :city => 'Tampa',
               :state => 'Fl',
