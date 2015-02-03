@@ -7,13 +7,13 @@ class GeoPointTest < Minitest::Test
     describe 'valid?' do
       it 'handles valid data' do
         skip "Not run in mock mode" unless Melissa.config.mode == :live
-        addr_obj = Melissa::AddrObj.new(
+        valid_addr_obj = Melissa.addr_obj(
             :address => '2517 SURFWOOD DR',
             :city => 'LAS VEGAS',
             :state => 'NV',
             :zip => '89128'
         )
-        geo_point = Melissa::GeoPoint.new(addr_obj)
+        geo_point = Melissa.geo_point(valid_addr_obj)
         assert geo_point.valid?
         assert_includes 36.2..36.3, geo_point.latitude
         assert_includes -115.3..-115.2, geo_point.longitude
@@ -28,13 +28,13 @@ class GeoPointTest < Minitest::Test
     describe 'number of days till licence expires' do
       it 'checks if we have more than 30 days till license expiration date' do
         skip "Not run in mock mode" unless Melissa.config.mode == :live
-        valid_address = Melissa::AddrObj.new(
+        valid_addr_obj = Melissa.addr_obj(
             :address => '2517 SURFWOOD DR',
             :city => 'LAS VEGAS',
             :state => 'NV',
             :zip => '89128'
         )
-        geo_point = Melissa::GeoPoint.new(addr_obj)
+        geo_point = Melissa::GeoPoint.geo_point(valid_addr_obj)
         assert_operator 30, :>, geo_point.days_until_license_expiration
       end
     end

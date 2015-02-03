@@ -6,6 +6,8 @@ module Melissa
   autoload :AddrObjMock,    'melissa/addr_obj_mock'
   autoload :AddrObjLive,    'melissa/addr_obj_live'
   autoload :GeoPoint,       'melissa/geo_point'
+  autoload :GeoPointMock,    'melissa/geo_point_mock'
+  autoload :GeoPointLive,    'melissa/geo_point_live'
 
   class << self
     attr_writer :config
@@ -17,6 +19,15 @@ module Melissa
       AddrObjLive.new(attrs)
     else
       AddrObjMock.new(attrs)
+    end
+  end
+
+  def self.geo_point(attrs)
+    if config.mode == :live
+      raise LoadError, "Melissa GeoPoint object was not loaded!" unless config.geo_point_library_loaded
+      GeoPointLive.new(attrs)
+    else
+      GeoPointMock.new(attrs)
     end
   end
 
