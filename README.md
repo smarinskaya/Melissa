@@ -1,6 +1,10 @@
 # Melissa
 
-TODO: Write a gem description
+Configurable interface to Melissa Data Address and GeoPoint objects
+
+# Description
+
+Melissa allows you to use ruby wrappers for Melissa Data's AddrObj and GeoPoint objects or use the mock objects depending on configuration.
 
 ## Installation
 
@@ -19,7 +23,9 @@ Or install it yourself as:
 ## Usage
 
 TODO: Write usage instructions here
-
+##Aknowlegments
+Configuratio pattern is developed based on Brandon Hilkert blog
+http://brandonhilkert.com/blog/ruby-gem-configuration-patterns/
 ## Contributing
 
 1. Fork it

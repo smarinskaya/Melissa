@@ -34,7 +34,7 @@ class GeoPointTest < Minitest::Test
             :state => 'NV',
             :zip => '89128'
         )
-        geo_point = Melissa::GeoPoint.geo_point(valid_addr_obj)
+        geo_point = Melissa.geo_point(valid_addr_obj)
         assert_operator 30, :>, geo_point.days_until_license_expiration
       end
     end

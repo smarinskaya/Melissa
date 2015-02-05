@@ -59,6 +59,9 @@ module Melissa
         mdAddrDestroy(h_addr_lib)
       end
 
+      #This function returns a date value corresponding to the date when the current license
+      #string expires.
+
       def self.license_expiration_date
         with_mdaddr { |h_addr_lib| mdAddrGetLicenseExpirationDate(h_addr_lib) }
       end
@@ -69,12 +72,24 @@ module Melissa
         (Date.parse(self.license_expiration_date) - Date.today).to_i
       end
 
-      def self.expiration_date
+     # U.S. Only — This function returns a date value representing the
+     # date when the current U.S. data files expire. This date enables you to confirm that the
+     # data files you are using are the latest available.
+
+      def self.data_expiration_date
         with_mdaddr { |h_addr_lib| mdAddrGetExpirationDate(h_addr_lib) }
       end
 
+      def self.days_until_data_expiration
+
+        date_string = self.data_expiration_date
+        #Function above returns the string in format mm-dd-yyyy,
+        #to parse it into date we need to change it to yyyy-mm-dd
+        formatted_date_string = data_string[6,4] + "-" + data_string[0,2] + "-" + data_string[3,2]
+        (Date.parse(formatted_date_string) - Date.today).to_i
+      end
+
       def initialize(opts)
-        puts "In live mode"
         h_addr_lib = mdAddrCreate
         mdAddrSetLicenseString(h_addr_lib, Melissa.config.addr_obj_license)
         mdAddrSetPathToUSFiles(h_addr_lib, Melissa.config.path_to_data_files)
@@ -105,7 +120,9 @@ module Melissa
       end
     rescue LoadError => e
       puts "Melissa AddrObj library was not loaded!"
+      Melissa.config.addr_obj_library_loaded = false
     else
+      puts "Loaded Melissa AddrObj Library"
       Melissa.config.addr_obj_library_loaded = true
     end
   end
