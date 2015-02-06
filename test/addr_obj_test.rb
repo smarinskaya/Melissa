@@ -74,7 +74,6 @@ class AddrObjTest < Minitest::Test
     describe "mock mode" do
       describe "valid?" do
         it 'handles valid data' do
-          puts "@@@we are here: #{Melissa.config.mode}"
           valid_address = Melissa.addr_obj(
               :address => '9802 Brompton Dr',
               :city => 'Tampa',

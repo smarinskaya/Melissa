@@ -1,9 +1,0 @@
-AddrObj:
-  :license_key:               "AddrObj license key"
-  :path_to_data_files:        "path to data directory"
-  :path_to_library:           "full name of AddrObj library (libmdAddr.so)"
-GeoPoint:
-  :license_key:               "GeoPint license key"
-  :path_to_data_files:        "path to data directory"
-  :path_to_library:           "full name of Geo Coder library (libmdGeo.so)"
-

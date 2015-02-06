@@ -10,12 +10,6 @@ module Melissa
     attr_accessor :geo_point_lib, :geo_point_lib_loaded
 
     def initialize
-      #default values
-      #TODO will this flag be set at this point??
-      #TODO do we need separate checks for 2 libraries?
-      #TODO do we need separate mock/live mode for 2 libraries?
-
-      puts "In Config#initialize #{@addr_obj_library_loaded.inspect}"
       if defined?(@addr_obj_library_loaded) && @addr_obj_library_loaded
         @mode = :live
       else
@@ -35,17 +29,19 @@ module Melissa
       @license           = ENV['MD_LICENSE']
     end
 
-    #you can configure path_to_yml from your code using:
+    #you can configure yml_path from your code using:
     #   Melissa.configure do |config|
-    #     config.yml_path = "/etc/config/melissa.yml"
+    #     config.config_path = "/etc/config/melissa.txt"
     #   end
-    def yml_path=(yml_path)
-      config_hash = YAML::load_file(yml_path)
-      config_hash.each do |key, value|
+    def config_path=(config_path)
+      File.open(config_path, 'r').each_line do |line|
+        data = line.split("=")
+        key = data[0].strip.downcase
+        value = data[1].strip.downcase
         send("#{key}=", value)
       end
     rescue Errno::ENOENT
-      raise "YAML configuration file couldn't be found. We need #{melissa_yml}"
+      raise "Configuration file couldn't be found. We need #{config_path}"
     end
 
     def home=(home)

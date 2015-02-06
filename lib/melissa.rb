@@ -15,7 +15,7 @@ module Melissa
 
   def self.addr_obj(attrs)
     if config.mode == :live
-      raise LoadError, "Melissa AddrObj was not loaded! From self.addr_obj" unless config.addr_obj_library_loaded
+      raise LoadError, "Melissa AddrObj was not loaded!" unless config.addr_obj_lib_loaded
       AddrObjLive.new(attrs)
     else
       AddrObjMock.new(attrs)
@@ -24,7 +24,7 @@ module Melissa
 
   def self.geo_point(attrs)
     if config.mode == :live
-      raise LoadError, "Melissa GeoPoint object was not loaded! From self.geo_point" unless config.geo_point_library_loaded
+      raise LoadError, "Melissa GeoPoint object was not loaded!" unless config.geo_point_lib_loaded
       GeoPointLive.new(attrs)
     else
       GeoPointMock.new(attrs)
