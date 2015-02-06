@@ -6,8 +6,8 @@ module Melissa
 
   class Config
 
-    attr_accessor :mode, :addr_obj_license, :path_to_data_files, :path_to_addr_obj_library, :addr_obj_library_loaded
-    attr_accessor :geo_point_license, :path_to_geo_point_library, :geo_point_library_loaded
+    attr_accessor :mode, :license, :data_path, :addr_obj_lib, :addr_obj_lib_loaded
+    attr_accessor :geo_point_lib, :geo_point_lib_loaded
 
     def initialize
       #default values
@@ -15,8 +15,8 @@ module Melissa
       #TODO do we need separate checks for 2 libraries?
       #TODO do we need separate mock/live mode for 2 libraries?
 
-      puts "In Config#initialize #{@addr_obj_library_loaded.present?}"
-      if @addr_obj_library_loaded.present? && (@addr_obj_library_loaded == true)
+      puts "In Config#initialize #{@addr_obj_library_loaded.inspect}"
+      if defined?(@addr_obj_library_loaded) && @addr_obj_library_loaded
         @mode = :live
       else
         @mode = :mock
@@ -28,38 +28,30 @@ module Melissa
       #MD_LICENSE. This allows you to update your license string without editing
       #and recompiling your code
 
-      @addr_obj_license         = ENV['MELISSA_ADDRESS_OBJECT_LICENSE']
-      @path_to_data_files       = ENV['MELISSA_ADDRESS_OBJECT_DATA_FILES']
-      @path_to_addr_obj_library = ENV['']
-
-      @geo_point_license         = ENV['MELISSA_GEO_POINT_LICENSE']
-      #TODO is it different from AddrObj
-      @path_to_data_files       = ENV['']
-      @path_to_geo_point_library = ENV['']
+      self.home          = ENV['MELISSA_HOME']          if ENV['MELISSA_HOME']
+      @data_path         = ENV['MELISSA_DATA_PATH']     if ENV['MELISSA_DATA_PATH']
+      @addr_obj_lib      = ENV['MELISSA_ADDR_OBJ_LIB']  if ENV['MELISSA_ADDR_OBJ_LIB']
+      @geo_point_lib     = ENV['MELISSA_GEO_POINT_LIB'] if ENV['MELISSA_GEO_POINT_LIB']
+      @license           = ENV['MD_LICENSE']
     end
 
-    #you can set config values from your code using:
+    #you can configure path_to_yml from your code using:
     #   Melissa.configure do |config|
-    #     config.load_from_yml("My new path to yml file")
+    #     config.yml_path = "/etc/config/melissa.yml"
     #   end
-
-    def load_from_yml(path_to_yml)
-      begin
-        config_hash = YAML::load_file(path_to_yml)
-      rescue Errno::ENOENT
-        raise "YAML configuration file couldn't be found. We need #{path_to_yml}"
-        return
+    def yml_path=(yml_path)
+      config_hash = YAML::load_file(yml_path)
+      config_hash.each do |key, value|
+        send("#{key}=", value)
       end
+    rescue Errno::ENOENT
+      raise "YAML configuration file couldn't be found. We need #{melissa_yml}"
+    end
 
-      #set attributes from yml
-      #For AddrObj
-      @addr_obj_license         = config_hash["AddrObj"][:license_key]
-      @path_to_data_files       = config_hash["AddrObj"][:path_to_data_files]
-      @path_to_addr_obj_library = config_hash["AddrObj"][:path_to_library]
-      #For GeoPoint
-      @geo_point_license         = config_hash["GeoPoint"][:license_key]
-      @path_to_data_files        = config_hash["GeoPoint"][:path_to_data_files]
-      @path_to_geo_point_library = config_hash["GeoPoint"][:path_to_library]
+    def home=(home)
+      @addr_obj_lib = "#{home}/AddrObj/libmdAddr.so"
+      @geo_obj_lib  = "#{home}/GeoObj/libmdGeo.so"
+      @data_path    = "#{home}/data"
     end
   end
 end

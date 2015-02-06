@@ -18,8 +18,10 @@ GEM
     ansi (1.5.0)
     builder (3.2.2)
     ffi (1.9.6)
+    ffi (1.9.6-java)
     i18n (0.7.0)
     json (1.8.2)
+    json (1.8.2-java)
     minitest (5.4.0)
     minitest-reporters (1.0.8)
       ansi
@@ -31,10 +33,12 @@ GEM
     ruby-progressbar (1.7.1)
     shoulda-context (1.2.1)
     thread_safe (0.3.4)
+    thread_safe (0.3.4-java)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES

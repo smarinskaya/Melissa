@@ -5,7 +5,7 @@ module Melissa
     extend FFI::Library
 
     begin
-      ffi_lib Melissa.config.path_to_geo_point_library
+      ffi_lib Melissa.config.geo_point_lib
 
       attr_functions = @@melissa_attributes.map { |name| ["mdGeoGet#{name}".to_sym, [:pointer], :string] }
 
@@ -35,16 +35,16 @@ module Melissa
 
       # Get all the attributes out up-front so we can destroy the mdGeo object
       class_eval <<-EOS
-      define_method(:fill_attributes) do |mdGeo|
-        #{@@melissa_attributes.map { |name| "@#{name.underscore} = mdGeoGet#{name}(mdGeo)" }.join("\n")}
-      end
+        define_method(:fill_attributes) do |mdGeo|
+          #{@@melissa_attributes.map { |name| "@#{name.underscore} = mdGeoGet#{name}(mdGeo)" }.join("\n")}
+        end
       EOS
 
       def self.with_mdgeo
         mdGeo = mdGeoCreate
         mdGeoSetLicenseString(mdGeo, @@license)
-        mdGeoSetPathToGeoCodeDataFiles(mdGeo, Melissa.config.path_to_data_files)
-        mdGeoSetPathToGeoPointDataFiles(mdGeo, Melissa.config.path_to_data_files)
+        mdGeoSetPathToGeoCodeDataFiles(mdGeo, Melissa.config.data_path)
+        mdGeoSetPathToGeoPointDataFiles(mdGeo, Melissa.config.data_path)
         result = mdGeoInitializeDataFiles(mdGeo)
         if result != 0
           raise mdGeoGetInitializeErrorString(mdGeo)
@@ -88,9 +88,9 @@ module Melissa
           raise "Invalid call to GeoPoint, unknown object #{addr_obj.inspect}"
         end
         mdGeo = mdGeoCreate
-        mdGeoSetLicenseString(mdGeo, Melissa.config.geo_point_license)
-        mdGeoSetPathToGeoCodeDataFiles(mdGeo, Melissa.config.path_to_data_files)
-        mdGeoSetPathToGeoPointDataFiles(mdGeo, Melissa.config.path_to_data_files)
+        mdGeoSetLicenseString(mdGeo, Melissa.config.license)
+        mdGeoSetPathToGeoCodeDataFiles(mdGeo, Melissa.config.data_path)
+        mdGeoSetPathToGeoPointDataFiles(mdGeo, Melissa.config.data_path)
         result = mdGeoInitializeDataFiles(mdGeo)
         if result != 0
           # TODO: Error condition
