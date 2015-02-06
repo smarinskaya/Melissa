@@ -5,7 +5,7 @@ module Melissa
     begin
       extend FFI::Library
 
-      ffi_lib Melissa.config.path_to_addr_obj_library if defined?(FFI)
+      ffi_lib Melissa.config.addr_obj_lib if defined?(FFI)
 
       attr_functions = @@melissa_attributes.map { |name| ["mdAddrGet#{name}".to_sym, [:pointer], :string] }
 
@@ -51,8 +51,8 @@ module Melissa
 
       def self.with_mdaddr
         h_addr_lib = mdAddrCreate
-        mdAddrSetLicenseString(h_addr_lib, Melissa.config.addr_obj_license)
-        mdAddrSetPathToUSFiles(h_addr_lib, Melissa.config.path_to_data_files)
+        mdAddrSetLicenseString(h_addr_lib, Melissa.config.license)
+        mdAddrSetPathToUSFiles(h_addr_lib, Melissa.config.data_path)
         mdAddrInitializeDataFiles(h_addr_lib)
         yield h_addr_lib
       ensure
@@ -63,13 +63,13 @@ module Melissa
       #string expires.
 
       def self.license_expiration_date
-        with_mdaddr { |h_addr_lib| mdAddrGetLicenseExpirationDate(h_addr_lib) }
+        Date.parse(with_mdaddr { |h_addr_lib| mdAddrGetLicenseExpirationDate(h_addr_lib) })
       end
 
       def self.days_until_license_expiration
         #I compare Date objects. I think it is more accurate.
         #self.license_expiration_date returns string in format: "YYYY-MM-DD"
-        (Date.parse(self.license_expiration_date) - Date.today).to_i
+        (self.license_expiration_date - Date.today).to_i
       end
 
      # U.S. Only — This function returns a date value representing the
@@ -77,41 +77,32 @@ module Melissa
      # data files you are using are the latest available.
 
       def self.data_expiration_date
-        with_mdaddr { |h_addr_lib| mdAddrGetExpirationDate(h_addr_lib) }
+        Date.strptime(with_mdaddr { |h_addr_lib| mdAddrGetExpirationDate(h_addr_lib) }, '%m-%d-%Y')
       end
 
       def self.days_until_data_expiration
-
-        date_string = self.data_expiration_date
-        #Function above returns the string in format mm-dd-yyyy,
-        #to parse it into date we need to change it to yyyy-mm-dd
-        formatted_date_string = data_string[6,4] + "-" + data_string[0,2] + "-" + data_string[3,2]
-        (Date.parse(formatted_date_string) - Date.today).to_i
+        (self.data_expiration_date - Date.today).to_i
       end
 
       def initialize(opts)
-        h_addr_lib = mdAddrCreate
-        mdAddrSetLicenseString(h_addr_lib, Melissa.config.addr_obj_license)
-        mdAddrSetPathToUSFiles(h_addr_lib, Melissa.config.path_to_data_files)
-        mdAddrInitializeDataFiles(h_addr_lib);
-        # clear any properties from a previous call
-        mdAddrClearProperties(h_addr_lib)
+        self.class.with_mdaddr do |h_addr_lib|
+          # clear any properties from a previous call
+          mdAddrClearProperties(h_addr_lib)
 
-        mdAddrSetCompany(h_addr_lib, opts[:company] || '');
-        mdAddrSetAddress(h_addr_lib, opts[:address] || '');
-        mdAddrSetAddress2(h_addr_lib, opts[:address2] || '');
-        mdAddrSetSuite(h_addr_lib, opts[:suite] || '');
-        mdAddrSetCity(h_addr_lib, opts[:city] || '');
-        mdAddrSetState(h_addr_lib, opts[:state] || '');
-        mdAddrSetZip(h_addr_lib, opts[:zip] || '');
-        mdAddrSetUrbanization(h_addr_lib, opts[:urbanization] || '');
-        mdAddrSetCountryCode(h_addr_lib, opts[:country_code] || '');
-        mdAddrVerifyAddress(h_addr_lib);
+          mdAddrSetCompany(h_addr_lib, opts[:company] || '');
+          mdAddrSetAddress(h_addr_lib, opts[:address] || '');
+          mdAddrSetAddress2(h_addr_lib, opts[:address2] || '');
+          mdAddrSetSuite(h_addr_lib, opts[:suite] || '');
+          mdAddrSetCity(h_addr_lib, opts[:city] || '');
+          mdAddrSetState(h_addr_lib, opts[:state] || '');
+          mdAddrSetZip(h_addr_lib, opts[:zip] || '');
+          mdAddrSetUrbanization(h_addr_lib, opts[:urbanization] || '');
+          mdAddrSetCountryCode(h_addr_lib, opts[:country_code] || '');
+          mdAddrVerifyAddress(h_addr_lib);
 
-        @resultcodes = mdAddrGetResults(h_addr_lib).split(',')
-        fill_attributes(h_addr_lib)
-
-        mdAddrDestroy(h_addr_lib)
+          @resultcodes = mdAddrGetResults(h_addr_lib).split(',')
+          fill_attributes(h_addr_lib)
+        end
       end
 
       def valid?
@@ -120,10 +111,10 @@ module Melissa
       end
     rescue LoadError => e
       puts "Melissa AddrObj library was not loaded!"
-      Melissa.config.addr_obj_library_loaded = false
+      Melissa.config.addr_obj_lib_loaded = false
     else
       puts "Loaded Melissa AddrObj Library"
-      Melissa.config.addr_obj_library_loaded = true
+      Melissa.config.addr_obj_lib_loaded = true
     end
   end
 end
