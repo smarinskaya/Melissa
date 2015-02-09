@@ -7,6 +7,8 @@ module Melissa
     begin
       ffi_lib Melissa.config.geo_point_lib
 
+      puts "In GeoPointLive: Melissa.config.geo_point_lib: #{Melissa.config.geo_point_lib} "
+
       attr_functions = @@melissa_attributes.map { |name| ["mdGeoGet#{name}".to_sym, [:pointer], :string] }
 
       functions = attr_functions + [
