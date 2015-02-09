@@ -55,6 +55,7 @@ module Melissa
       @addr_obj_lib = "#{home}/AddrObj/libmdAddr.so"
       @geo_obj_lib  = "#{home}/GeoObj/libmdGeo.so"
       @data_path    = "#{home}/data"
+      puts "In home=, @addr_obj_lib=#{@addr_obj_lib}"
     end
   end
 end
