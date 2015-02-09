@@ -11,7 +11,7 @@ module Melissa
 
     def initialize
 
-      puts "In the beginning of Config#initialize: defined?(@addr_obj_library_loaded) #{defined?(@addr_obj_library_loaded)} @addr_obj_library_loaded: #{@addr_obj_library_loaded}"
+      puts "In the beginning of Config#initialize:  @addr_obj_library_loaded: #{@addr_obj_library_loaded.inspect}"
       if defined?(@addr_obj_library_loaded) && @addr_obj_library_loaded
         @mode = :live
       else
