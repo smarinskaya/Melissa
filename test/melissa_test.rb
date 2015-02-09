@@ -43,21 +43,21 @@ class MelissaTest < Minitest::Test
       end
     end
 
-    # describe "mock mode" do
-    #   before do
-    #     Melissa.config.mode = :mock
-    #   end
-    #
-    #   it 'initializes AddrObjMock object' do
-    #     valid_address = Melissa.addr_obj(
-    #         :address => '9802 Brompton Dr',
-    #         :city => 'Tampa',
-    #         :state => 'Fl',
-    #         :zip => '33626'
-    #     )
-    #     assert_kind_of Melissa::AddrObjMock, valid_address
-    #   end
-    # end
+    describe "mock mode" do
+      before do
+        Melissa.config.mode = :mock
+      end
+
+      it 'initializes AddrObjMock object' do
+        valid_address = Melissa.addr_obj(
+            :address => '9802 Brompton Dr',
+            :city => 'Tampa',
+            :state => 'Fl',
+            :zip => '33626'
+        )
+        assert_kind_of Melissa::AddrObjMock, valid_address
+      end
+    end
   end
 
   describe 'Melissa.geo_point' do
@@ -75,21 +75,21 @@ class MelissaTest < Minitest::Test
       end
     end
 
-    # describe "mock mode" do
-    #   before do
-    #     Melissa.config.mode = :mock
-    #   end
-    #
-    #   it 'initializes GeoPointMock object' do
-    #     valid_addr_obj = Melissa.addr_obj(
-    #         :address => '9802 Brompton Dr',
-    #         :city => 'Tampa',
-    #         :state => 'Fl',
-    #         :zip => '33626'
-    #     )
-    #     geo_point_obj = Melissa.geo_point(valid_addr_obj)
-    #     assert_kind_of Melissa::GeoPointMock, geo_point_obj
-    #   end
-    # end
+    describe "mock mode" do
+      before do
+        Melissa.config.mode = :mock
+      end
+
+      it 'initializes GeoPointMock object' do
+        valid_addr_obj = Melissa.addr_obj(
+            :address => '9802 Brompton Dr',
+            :city => 'Tampa',
+            :state => 'Fl',
+            :zip => '33626'
+        )
+        geo_point_obj = Melissa.geo_point(valid_addr_obj)
+        assert_kind_of Melissa::GeoPointMock, geo_point_obj
+      end
+    end
   end
 end
