@@ -46,10 +46,10 @@ module Melissa
 
     def home=(home)
       @addr_obj_lib = "#{home}/AddrObj/libmdAddr.so"
-      @geo_obj_lib = "#{home}/GeoObj/libmdGeo.so"
+      @geo_point_lib = "#{home}/GeoObj/libmdGeo.so"
       @data_path = "#{home}/data"
       puts "In home=, @addr_obj_lib=#{@addr_obj_lib}"
-      puts "In home=, @geo_obj_lib=#{@geo_obj_lib}"
+      puts "In home=, @geo_point_lib=#{@geo_point_lib}"
     end
 
     def addr_obj_lib_loaded=(value)
