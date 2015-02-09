@@ -1,13 +1,12 @@
-require "melissa/version"
-require "melissa/config"
+
 
 module Melissa
-  autoload :AddrObj,        'melissa/addr_obj'
-  autoload :AddrObjMock,    'melissa/addr_obj_mock'
-  autoload :AddrObjLive,    'melissa/addr_obj_live'
-  autoload :GeoPoint,       'melissa/geo_point'
-  autoload :GeoPointMock,    'melissa/geo_point_mock'
-  autoload :GeoPointLive,    'melissa/geo_point_live'
+  # autoload :AddrObj,        'melissa/addr_obj'
+  # autoload :AddrObjMock,    'melissa/addr_obj_mock'
+  # autoload :AddrObjLive,    'melissa/addr_obj_live'
+  # autoload :GeoPoint,       'melissa/geo_point'
+  # autoload :GeoPointMock,    'melissa/geo_point_mock'
+  # autoload :GeoPointLive,    'melissa/geo_point_live'
 
   class << self
     attr_writer :config
@@ -46,3 +45,12 @@ module Melissa
 end
 
 require 'melissa/railtie' if defined?(Rails)
+
+require "melissa/version"
+require "melissa/config"
+require 'melissa/addr_obj'
+require 'melissa/geo_point'
+require 'melissa/addr_obj_live'
+require 'melissa/geo_point_live'
+require 'melissa/addr_obj_mock'
+require 'melissa/geo_point_mock'
