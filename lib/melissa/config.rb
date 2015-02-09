@@ -16,6 +16,8 @@ module Melissa
         @mode = :mock
       end
 
+      puts "In Config.new: #{@mode}"
+
       #It is recommended to read the following config options from environment variables
       #From Melissa Data documentation:
       #The license string should be entered as an environment variable named
