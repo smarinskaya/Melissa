@@ -47,6 +47,7 @@ module Melissa
           key   = line[0,equal_index].strip.downcase
           value = line[(equal_index+1)..-1].strip
           send("#{key}=", value)
+          puts "In config_path=, @license=#{license}"
         end
       end
     rescue Errno::ENOENT
