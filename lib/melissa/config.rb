@@ -10,8 +10,6 @@ module Melissa
     attr_accessor :geo_point_lib, :geo_point_lib_loaded
 
     def initialize
-      puts "In Config.new: #{@mode}"
-
       #It is recommended to read the following config options from environment variables
       #From Melissa Data documentation:
       #The license string should be entered as an environment variable named
