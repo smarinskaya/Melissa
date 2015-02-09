@@ -1,4 +1,6 @@
 require 'yaml'
+require 'melissa/addr_obj_live'
+require 'melissa/geo_point_live'
 
 module Melissa
 
