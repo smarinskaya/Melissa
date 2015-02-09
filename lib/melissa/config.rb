@@ -22,11 +22,12 @@ module Melissa
       #MD_LICENSE. This allows you to update your license string without editing
       #and recompiling your code
 
+      self.config_path   = ENV['MELISSA_CONFIG_PATH']   if ENV['MELISSA_CONFIG_PATH']
       self.home          = ENV['MELISSA_HOME']          if ENV['MELISSA_HOME']
       @data_path         = ENV['MELISSA_DATA_PATH']     if ENV['MELISSA_DATA_PATH']
       @addr_obj_lib      = ENV['MELISSA_ADDR_OBJ_LIB']  if ENV['MELISSA_ADDR_OBJ_LIB']
       @geo_point_lib     = ENV['MELISSA_GEO_POINT_LIB'] if ENV['MELISSA_GEO_POINT_LIB']
-      @license           = ENV['MD_LICENSE']
+      @license           = ENV['MD_LICENSE']            if ENV['MD_LICENSE']
     end
 
     #you can configure yml_path from your code using:
@@ -34,11 +35,15 @@ module Melissa
     #     config.config_path = "/etc/config/melissa.txt"
     #   end
     def config_path=(config_path)
-      File.open(config_path, 'r').each_line do |line|
-        data = line.split("=")
-        key = data[0].strip.downcase
-        value = data[1].strip.downcase
-        send("#{key}=", value)
+      File.open(config_path, 'r') do |fin|
+        fin.each do |line|
+          line.strip!
+          next if line.empty? || line[0] == '#'
+          equal_index = line.index('=')
+          key   = line[0,equal_index].strip.downcase
+          value = line[(equal_index+1)..-1].strip
+          send("#{key}=", value)
+        end
       end
     rescue Errno::ENOENT
       raise "Configuration file couldn't be found. We need #{config_path}"
