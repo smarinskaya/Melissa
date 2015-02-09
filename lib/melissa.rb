@@ -14,6 +14,7 @@ module Melissa
   end
 
   def self.addr_obj(attrs)
+    puts "In Melissa#addr_obj checking mode: #{config.mode}"
     if config.mode == :live
       raise LoadError, "Melissa AddrObj was not loaded!" unless config.addr_obj_lib_loaded
       AddrObjLive.new(attrs)
