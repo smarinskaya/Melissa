@@ -30,6 +30,10 @@ class MelissaTest < Minitest::Test
   # end
 
   describe 'Melissa.addr_obj' do
+    before do
+      Melissa.config.mode = :live
+    end
+
     describe "live mode" do
       it 'initializes AddrObjLive object' do
         skip "Not run in mock mode" unless Melissa.config.mode == :live
@@ -61,6 +65,10 @@ class MelissaTest < Minitest::Test
   end
 
   describe 'Melissa.geo_point' do
+    before do
+      Melissa.config.mode = :live
+    end
+
     describe "live mode" do
       it 'initializes GeoPointLive object' do
         skip "Not run in mock mode" unless Melissa.config.mode == :live

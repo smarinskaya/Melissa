@@ -8,14 +8,14 @@ class AddrObjTest < Minitest::Test
         it 'handles valid data' do
           skip "Not run in mock mode" unless Melissa.config.mode == :live
           valid_address = Melissa.addr_obj(
-              :address => '2517 SURFWOOD DR',
-              :city => 'LAS VEGAS',
+              :address => '2517 Surfwood Dr',
+              :city => 'Las Vegas',
               :state => 'NV',
               :zip => '89128'
           )
           assert valid_address.valid?
           assert_equal '2517 Surfwood Dr', valid_address.address
-          assert_equal 'LAS VEGAS', valid_address.city
+          assert_equal 'Las Vegas', valid_address.city
           assert_equal '89128718217', valid_address.delivery_point
         end
 
@@ -36,8 +36,8 @@ class AddrObjTest < Minitest::Test
         it 'sets delivery point for valid data' do
           skip "Not run in mock mode" unless Melissa.config.mode == :live
           valid_address = Melissa.addr_obj(
-              :address => '2517 SURFWOOD DR',
-              :city => 'LAS VEGAS',
+              :address => '2517 Surfwood Dr',
+              :city => 'Las Vegas',
               :state => 'NV',
               :zip => '89128'
           )
@@ -49,8 +49,8 @@ class AddrObjTest < Minitest::Test
         it 'checks if we have more than 30 days till license expiration date' do
           skip "Not run in mock mode" unless Melissa.config.mode == :live
           valid_address = Melissa.addr_obj(
-              :address => '2517 SURFWOOD DR',
-              :city => 'LAS VEGAS',
+              :address => '2517 Surfwood Dr',
+              :city => 'Las Vegas',
               :state => 'NV',
               :zip => '89128'
           )

@@ -75,7 +75,7 @@ module Melissa
         with_mdgeo { |mdGeo| mdGeoGetExpirationDate(mdGeo) }
       end
 
-      def self.days_until_license_expiration
+      def self.days_until_data_expiration
         #I compare Date objects. I think it is more accurate.
         #self.license_expiration_date returns string in format: "YYYY-MM-DD"
         (Date.parse(self.expiration_date) - Date.today).to_i
