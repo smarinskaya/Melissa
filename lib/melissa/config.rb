@@ -10,6 +10,8 @@ module Melissa
     attr_accessor :geo_point_lib, :geo_point_lib_loaded
 
     def initialize
+
+      puts "In the beginning of Config#initialize: defined?(@addr_obj_library_loaded) #{defined?(@addr_obj_library_loaded)} @addr_obj_library_loaded: #{@addr_obj_library_loaded}"
       if defined?(@addr_obj_library_loaded) && @addr_obj_library_loaded
         @mode = :live
       else
