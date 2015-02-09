@@ -5,7 +5,11 @@ module Melissa
     begin
       extend FFI::Library
 
+      puts "In the beginning of AddrObjLive"
+
       ffi_lib Melissa.config.addr_obj_lib if defined?(FFI)
+
+      puts "Melissa.config.addr_obj_lib: #{Melissa.config.addr_obj_lib}"
 
       attr_functions = @@melissa_attributes.map { |name| ["mdAddrGet#{name}".to_sym, [:pointer], :string] }
 
