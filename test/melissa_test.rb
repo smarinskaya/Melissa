@@ -31,7 +31,7 @@ class MelissaTest < Minitest::Test
 
   describe 'Melissa.addr_obj' do
     before do
-      Melissa.config.mode = :live
+      Melissa.config.mode = :live if  Melissa.config.addr_obj_lib_loaded
     end
 
     describe "live mode" do
@@ -66,7 +66,7 @@ class MelissaTest < Minitest::Test
 
   describe 'Melissa.geo_point' do
     before do
-      Melissa.config.mode = :live
+      Melissa.config.mode = :live if  Melissa.config.addr_obj_lib_loaded
     end
 
     describe "live mode" do

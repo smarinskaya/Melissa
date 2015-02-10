@@ -4,6 +4,10 @@ class AddrObjTest < Minitest::Test
   describe Melissa::AddrObj do
 
     describe "live mode" do
+      before do
+        Melissa.config.mode = :live if  Melissa.config.addr_obj_lib_loaded
+      end
+
       describe "valid?" do
         it 'handles valid data' do
           skip "Not run in mock mode" unless Melissa.config.mode == :live
