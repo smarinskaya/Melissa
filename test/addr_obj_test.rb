@@ -5,7 +5,7 @@ class AddrObjTest < Minitest::Test
 
     describe "live mode" do
       before do
-        Melissa.config.mode = :live if  Melissa.config.addr_obj_lib_loaded
+        Melissa.config.mode = :live if Melissa.config.addr_obj_lib_loaded
       end
 
       describe "valid?" do

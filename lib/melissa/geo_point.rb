@@ -72,6 +72,4 @@ module Melissa
   end
 end
 
-#a = Melissa::AddrObj.new(:address => 'valid street', :city => 'Tampa', :state => 'FL', :zip => '33626')
-#g = Melissa::GeoPoint.new(a)
-#puts "lat,long=#{g.latitude},#{g.longitude}"
+

@@ -1,12 +1,4 @@
-
-
 module Melissa
-  # autoload :AddrObj,        'melissa/addr_obj'
-  # autoload :AddrObjMock,    'melissa/addr_obj_mock'
-  # autoload :AddrObjLive,    'melissa/addr_obj_live'
-  # autoload :GeoPoint,       'melissa/geo_point'
-  # autoload :GeoPointMock,    'melissa/geo_point_mock'
-  # autoload :GeoPointLive,    'melissa/geo_point_live'
 
   class << self
     attr_writer :config
@@ -53,3 +45,11 @@ require 'melissa/addr_obj_live'
 require 'melissa/geo_point_live'
 require 'melissa/addr_obj_mock'
 require 'melissa/geo_point_mock'
+
+
+#valid_address_obj = Melissa.adrr_obj(:address => 'valid street', :city => 'Tampa', :state => 'FL', :zip => '33626')
+#puts "addr=#{valid_address_obj.address}"
+#puts "deliverypoint=#{valid_address_obj.delivery_point}"
+
+#g = Melissa.geo_point(valid_address_obj)
+#puts "lat,long=#{g.latitude},#{g.longitude}"

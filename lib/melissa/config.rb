@@ -37,7 +37,6 @@ module Melissa
           key = line[0, equal_index].strip.downcase
           value = line[(equal_index+1)..-1].strip
           send("#{key}=", value)
-          puts "In config_path=, @license=#{license}"
         end
       end
     rescue Errno::ENOENT
@@ -48,14 +47,11 @@ module Melissa
       @addr_obj_lib = "#{home}/AddrObj/libmdAddr.so"
       @geo_point_lib = "#{home}/GeoObj/libmdGeo.so"
       @data_path = "#{home}/data"
-      puts "In home=, @addr_obj_lib=#{@addr_obj_lib}"
-      puts "In home=, @geo_point_lib=#{@geo_point_lib}"
     end
 
     def addr_obj_lib_loaded=(value)
       @addr_obj_lib_loaded = value
       @mode ||= :live if value
-      puts "Should set mode to live #{mode}"
     end
 
     def geo_point_library_loaded=(value)

@@ -1,33 +1,6 @@
 require 'test_helper'
 
 class MelissaTest < Minitest::Test
-  #TODO comment describe::Config block before live testing
-  # describe "Melissa::Config" do
-  #   describe "#initialize" do
-  #
-  #     #TODO this test helped me in development, but the mode depends on the fact,
-  #     #TODO that library is not loaded
-  #     it "sets default values correctly" do
-  #       Melissa::Config.new
-  #       assert_equal :mock, Melissa.config.mode
-  #     end
-  #   end
-  #
-  #   describe "#config_path=" do
-  #     it "correctly loads config settings" do
-  #
-  #       pwd = File.dirname(__FILE__)
-  #       #TODO is there better way to get to the right directory?
-  #       top=pwd[0..-6]
-  #       melissa_txt = File.join(top,"config/melissa.txt")
-  #
-  #       config = Melissa.reset
-  #       config.config_path = melissa_txt
-  #
-  #       assert_equal 'valid_license_key', config.license
-  #     end
-  #   end
-  # end
 
   describe 'Melissa.addr_obj' do
     before do

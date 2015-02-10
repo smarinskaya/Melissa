@@ -89,6 +89,4 @@ module Melissa
 end
 
 
-#a = Melissa::AddrObj.new(:address => 'valid street', :city => 'Tampa', :state => 'FL', :zip => '33626')
-#puts "addr=#{a.address}"
-#puts "deliverypoint=#{a.delivery_point}"
+
