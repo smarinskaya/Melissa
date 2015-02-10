@@ -58,7 +58,7 @@ class AddrObjTest < Minitest::Test
               :state => 'NV',
               :zip => '89128'
           )
-          assert_operator 30, :>, valid_address.days_until_license_expiration
+          assert_operator 30, :>, valid_address.class.days_until_license_expiration
         end
       end
     end
