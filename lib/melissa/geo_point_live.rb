@@ -44,7 +44,7 @@ module Melissa
 
       def self.with_mdgeo
         mdGeo = mdGeoCreate
-        mdGeoSetLicenseString(mdGeo, @@license)
+        mdGeoSetLicenseString(mdGeo, Melissa.config.license)
         mdGeoSetPathToGeoCodeDataFiles(mdGeo, Melissa.config.data_path)
         mdGeoSetPathToGeoPointDataFiles(mdGeo, Melissa.config.data_path)
         result = mdGeoInitializeDataFiles(mdGeo)
