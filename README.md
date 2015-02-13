@@ -44,21 +44,21 @@ Or install it yourself as:
 
 ## Usage
 
-      It is recommended to read the following config options from environment variables
-      From Melissa Data documentation:
-      The license string should be entered as an environment variable named
-      MD_LICENSE. This allows you to update your license string without editing
-      and recompiling your code
+It is recommended to read the following config options from environment variables
+From Melissa Data documentation:
+The license string should be entered as an environment variable named
+MD_LICENSE. This allows you to update your license string without editing
+and recompiling your code
 
  ```ruby
       self.config_path = ENV['MELISSA_CONFIG_PATH'] if ENV['MELISSA_CONFIG_PATH']
-      self.home = ENV['MELISSA_HOME'] if ENV['MELISSA_HOME']
-      @data_path = ENV['MELISSA_DATA_PATH'] if ENV['MELISSA_DATA_PATH']
-      @addr_obj_lib = ENV['MELISSA_ADDR_OBJ_LIB'] if ENV['MELISSA_ADDR_OBJ_LIB']
-      @geo_point_lib = ENV['MELISSA_GEO_POINT_LIB'] if ENV['MELISSA_GEO_POINT_LIB']
-      @license = ENV['MD_LICENSE'] if ENV['MD_LICENSE']
+      self.home        = ENV['MELISSA_HOME'] if ENV['MELISSA_HOME']
+      @data_path       = ENV['MELISSA_DATA_PATH'] if ENV['MELISSA_DATA_PATH']
+      @addr_obj_lib    = ENV['MELISSA_ADDR_OBJ_LIB'] if ENV['MELISSA_ADDR_OBJ_LIB']
+      @geo_point_lib   = ENV['MELISSA_GEO_POINT_LIB'] if ENV['MELISSA_GEO_POINT_LIB']
+      @license         = ENV['MD_LICENSE'] if ENV['MD_LICENSE']
  ```
-      It is also possible to set HOME and LICENSE variables in configuration file, which can be accesses
+It is also possible to set HOME and LICENSE variables in configuration file, which can be accesses
 
   ```ruby
        Melissa.configure do |config|
@@ -66,15 +66,15 @@ Or install it yourself as:
        end
   ```
 
-       A suite number can be passed at the end of the values passed to :address
-       option, or as the parameter of either the :address2 or the :suite option.
-       If the value passed to the :address option cannot be verified, Address Object
-       will attempt to verify the value passed via the :address2 option. See Address
-       Handling in Melissa Data Documentation for more information.
-       If you use :zip option, :city and :state parameters are optional.
-       Likewise, if :city and :state are populated, :zip is optional. If possible, it is the
-       best practice to pass all three values if possible, because Address Object will use
-       the values to validate each other.
+A suite number can be passed at the end of the values passed to :address
+option, or as the parameter of either the :address2 or the :suite option.
+If the value passed to the :address option cannot be verified, Address Object
+will attempt to verify the value passed via the :address2 option. See Address
+Handling in Melissa Data Documentation for more information.
+If you use :zip option, :city and :state parameters are optional.
+Likewise, if :city and :state are populated, :zip is optional. If possible, it is the
+best practice to pass all three values if possible, because Address Object will use
+the values to validate each other.
 
   ```ruby
   #create AddrObj
@@ -94,14 +94,13 @@ Or install it yourself as:
    longitude= g.longitude
   ```
 
-      The calls to Melissa Data library will be attempted only if Melissa Data library is loaded.
-      Otherwise mock objects will be used. This way there is no need to install Melissa Data library on development machine.
-      The following rules are used in mocking AddrObj Library:
-      1) if zip_code is present, addres object is valid.
-      2) to mock delivery point: "#{zip_code}1234#{last 2 digits of zip code}".
-         For example, zip_code = 33613     =>    delivery_point = 33613123413
-
-      Mocked GeoPoint object will return following values:
+The calls to Melissa Data library will be attempted only if Melissa Data library is loaded.
+Otherwise mock objects will be used. This way there is no need to install Melissa Data library on development machine.
+The following rules are used in mocking AddrObj Library:
+1) if zip_code is present, addres object is valid.
+2) to mock delivery point: "#{zip_code}1234#{last 2 digits of zip code}".
+   For example, zip_code = 33613     =>    delivery_point = 336131
+Mocked GeoPoint object will return following values:
 
       ```ruby
         @latitude = 36.20687
@@ -126,8 +125,9 @@ For complete documentation see: http://smarinskaya.github.io/Melissa
 
 ## Authors
 
-[Brad Pardee](https://github.com/bpardee)
-[Svetlana Marinskaya](https://github.com/smarinskaya)
+1. [Brad Pardee](https://github.com/bpardee)
+
+2. [Svetlana Marinskaya](https://github.com/smarinskaya)
 
 
 ##Aknowlegments
