@@ -24,9 +24,9 @@ module Melissa
       @license = ENV['MD_LICENSE'] if ENV['MD_LICENSE']
     end
 
-    #you can configure yml_path from your code using:
+    #you can configure config_path from your code using:
     #   Melissa.configure do |config|
-    #     config.config_path = "/etc/config/melissa.txt"
+    #     config.config_path = "/etc/config/melissa"
     #   end
     def config_path=(config_path)
       File.open(config_path, 'r') do |fin|
@@ -56,6 +56,7 @@ module Melissa
 
     def geo_point_library_loaded=(value)
       @geo_point_lib_loaded = value
+      @mode ||= :live if value
     end
   end
 end
