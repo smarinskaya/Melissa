@@ -97,9 +97,10 @@ the values to validate each other.
 The calls to Melissa Data library will be attempted only if Melissa Data library is loaded.
 Otherwise mock objects will be used. This way there is no need to install Melissa Data library on development machine.
 The following rules are used in mocking AddrObj Library:
-1) if zip_code is present, addres object is valid.
-2) to mock delivery point: "#{zip_code}1234#{last 2 digits of zip code}".
+1. if zip_code is present, addres object is valid.
+2. to mock delivery point: "#{zip_code}1234#{last 2 digits of zip code}".
    For example, zip_code = 33613     =>    delivery_point = 336131
+
 Mocked GeoPoint object will return following values:
 
       ```ruby
@@ -126,7 +127,6 @@ For complete documentation see: http://smarinskaya.github.io/Melissa
 ## Authors
 
 1. [Brad Pardee](https://github.com/bpardee)
-
 2. [Svetlana Marinskaya](https://github.com/smarinskaya)
 
 
