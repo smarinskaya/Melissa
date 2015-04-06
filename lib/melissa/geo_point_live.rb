@@ -56,26 +56,26 @@ module Melissa
       #This function returns a date value corresponding to the date when the current license
       #string expires.
       def self.license_expiration_date
-        with_mdgeo { |mdGeo| mdGeoGetLicenseExpirationDate(mdGeo) }
+        Date.parse(with_mdgeo { |mdGeo| mdGeoGetLicenseExpirationDate(mdGeo) })
       end
 
       def self.days_until_license_expiration
         #I compare Date objects. I think it is more accurate.
         #self.license_expiration_date returns string in format: "YYYY-MM-DD"
-        (Date.parse(self.license_expiration_date) - Date.today).to_i
+        (self.license_expiration_date - Date.today).to_i
       end
 
       # his function returns a date value representing the
       # date when the current data files expire. This date enables you to confirm that the
       # data files you are using are the latest available.
       def self.expiration_date
-        with_mdgeo { |mdGeo| mdGeoGetExpirationDate(mdGeo) }
+        Date.parse(with_mdgeo { |mdGeo| mdGeoGetExpirationDate(mdGeo)})
       end
 
       def self.days_until_data_expiration
         #I compare Date objects. I think it is more accurate.
         #self.license_expiration_date returns string in format: "YYYY-MM-DD"
-        (Date.parse(self.expiration_date) - Date.today).to_i
+        (self.expiration_date - Date.today).to_i
       end
 
       def initialize(addr_obj)
