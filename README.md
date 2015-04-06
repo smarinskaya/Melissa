@@ -99,17 +99,17 @@ Otherwise mock objects will be used. This way there is no need to install Meliss
 The following rules are used in mocking AddrObj Library:
 1. if zip_code is present, addres object is valid.
 2. to mock delivery point: "#{zip_code}1234#{last 2 digits of zip code}".
-   For example, zip_code = 33613     =>    delivery_point = 336131
+   For example, zip_code = 33613     =>    delivery_point = 33613123413
 
 Mocked GeoPoint object will return following values:
 
-      ```ruby
+    ```ruby
         @latitude = 36.20687
              @longitude = -115.27857
              @time_zone_code = '08'
              @resultcodes = ['AS01']
              @is_valid = true
-      ```
+    ```
 
 ## Documentation
 
