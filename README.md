@@ -105,10 +105,10 @@ Mocked GeoPoint object will return following values:
 
     ```ruby
         @latitude = 36.20687
-             @longitude = -115.27857
-             @time_zone_code = '08'
-             @resultcodes = ['AS01']
-             @is_valid = true
+        @longitude = -115.27857
+        @time_zone_code = '08'
+        @resultcodes = ['AS01']
+        @is_valid = true
     ```
 
 ## Documentation
