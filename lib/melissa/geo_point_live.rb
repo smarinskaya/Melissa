@@ -78,55 +78,44 @@ module Melissa
         (self.expiration_date - Date.today).to_i
       end
 
-      def initialize(addr_obj)
+      def initialize(opts)
         @is_valid = false
 
-        if addr_obj.kind_of?(AddrObj)
-          @addr_obj = addr_obj
-        else
-          raise "Invalid call to GeoPoint, unknown object #{addr_obj.inspect}"
-        end
-        mdGeo = mdGeoCreate
-        mdGeoSetLicenseString(mdGeo, Melissa.config.license)
-        mdGeoSetPathToGeoCodeDataFiles(mdGeo, Melissa.config.data_path)
-        mdGeoSetPathToGeoPointDataFiles(mdGeo, Melissa.config.data_path)
-        result = mdGeoInitializeDataFiles(mdGeo)
-        if result != 0
-          # TODO: Error condition
-          error_message = mdGeoGetInitializeErrorString(mdGeo)
-        end
-
-        result = mdGeoGeoPoint(mdGeo, @addr_obj.zip || '', @addr_obj.plus4 || '', @addr_obj.delivery_point_code || '')
-
-        @resultcodes = mdGeoGetResults(mdGeo).split(',')
-        fatals = @resultcodes & @@fatal_codes
-        @is_valid = fatals.blank?
-        if @is_valid
-          fill_attributes(mdGeo)
-          # Convert from strings to actual types
-          if @latitude.blank?
-            @latitude = nil
+        self.class.with_mdgeo do |mdGeo|
+          if opts.kind_of?(AddrObj)
+            mdGeoGeoPoint(mdGeo, opts.zip || '', opts.plus4 || '', opts.delivery_point_code || '')
+          elsif opts.kind_of?(Hash)
+            mdGeoGeoPoint(mdGeo, opts[:zip] || '', opts[:plus4] || '', opts[:delivery_point_code] || '')
           else
-            @latitude = @latitude.to_f
+            raise "Invalid call to GeoPoint, unknown object #{addr_obj.inspect}"
           end
-          if @longitude.blank?
-            @longitude = nil
+          @resultcodes = mdGeoGetResults(mdGeo).split(',')
+          fatals = @resultcodes & @@fatal_codes
+          @is_valid = fatals.blank?
+          if @is_valid
+            fill_attributes(mdGeo)
+            # Convert from strings to actual types
+            if @latitude.blank?
+              @latitude = nil
+            else
+              @latitude = @latitude.to_f
+            end
+            if @longitude.blank?
+              @longitude = nil
+            else
+              @longitude = @longitude.to_f
+            end
+            if @latitude == 0.0 && @longitude == 0.0
+              @latitude = nil
+              @longitude = nil
+              @is_valid = false
+            end
           else
-            @longitude = @longitude.to_f
-          end
-          if @latitude == 0.0 && @longitude == 0.0
-            @latitude = nil
-            @longitude = nil
-            @is_valid = false
-          end
-        else
-          fatals.each do |fatal_code|
-            raise "FATAL ERROR Melissa GeoPoint returned #{fatal_code}-#{@@codes[fatal_code]}"
+            fatals.each do |fatal_code|
+              raise "FATAL ERROR Melissa GeoPoint returned #{fatal_code}-#{@@codes[fatal_code]}"
+            end
           end
         end
-
-      ensure
-        mdGeoDestroy(mdGeo) if mdGeo
       end
     rescue LoadError => e
       puts "Melissa GeoPoint library was not loaded!"
