@@ -87,7 +87,7 @@ module Melissa
           elsif opts.kind_of?(Hash)
             mdGeoGeoPoint(mdGeo, opts[:zip] || '', opts[:plus4] || '', opts[:delivery_point_code] || '')
           else
-            raise "Invalid call to GeoPoint, unknown object #{addr_obj.inspect}"
+            raise "Invalid call to GeoPoint, unknown object #{opts.inspect}"
           end
           @resultcodes = mdGeoGetResults(mdGeo).split(',')
           fatals = @resultcodes & @@fatal_codes
