@@ -114,11 +114,6 @@ Mocked GeoPoint object will return following values:
         @is_valid = true
     ```
 
-## Documentation
-
-For complete documentation see: http://smarinskaya.github.io/Melissa
-
-
 ## Meta
 
 * Code: `git clone git://github.com/smarinskaya/melissa.git`
