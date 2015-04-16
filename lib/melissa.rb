@@ -47,9 +47,11 @@ require 'melissa/addr_obj_mock'
 require 'melissa/geo_point_mock'
 
 
-#valid_address_obj = Melissa.adrr_obj(:address => 'valid street', :city => 'Tampa', :state => 'FL', :zip => '33626')
+#valid_address_obj = ::Melissa.adrr_obj(:address => 'valid street', :city => 'Tampa', :state => 'FL', :zip => '33626')
 #puts "addr=#{valid_address_obj.address}"
 #puts "deliverypoint=#{valid_address_obj.delivery_point}"
 
-#g = Melissa.geo_point(valid_address_obj)
+#g = ::Melissa.geo_point(valid_address_obj)
 #puts "lat,long=#{g.latitude},#{g.longitude}"
+#or
+#g = ::Melissa.geo_point(:zip => 'zip', :plus4 => 'plus4', :delivery_point_code => 'delivery_point_code')

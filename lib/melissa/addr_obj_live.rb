@@ -109,10 +109,8 @@ module Melissa
         (@resultcodes & @@good_codes).present? && (@resultcodes & @@bad_codes).empty?
       end
     rescue LoadError => e
-      puts "Melissa AddrObj library was not loaded!"
       Melissa.config.addr_obj_lib_loaded = false
     else
-      puts "Loaded Melissa AddrObj Library"
       Melissa.config.addr_obj_lib_loaded = true
     end
   end

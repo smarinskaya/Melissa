@@ -78,7 +78,7 @@ the values to validate each other.
 
   ```ruby
   #create AddrObj
-   valid_addr_obj = Melissa.addr_obj(
+   valid_addr_obj = ::Melissa.addr_obj(
               :address => '9802 Brompton Dr',
               :city => 'Tampa',
               :state => 'Fl',
@@ -88,10 +88,13 @@ the values to validate each other.
    deliverypoint = valid_addr_obj.delivery_point
 
    #create GeoPoint Object
-   geo_point_obj = Melissa.geo_point(valid_addr_obj)
+   geo_point_obj = ::Melissa.geo_point(valid_addr_obj)
    #use it
-   latitude = g.latitude
-   longitude= g.longitude
+   latitude = geo_point_obj.latitude
+   longitude= geo_point_obj.longitude
+   #or
+   geo_point_obj = ::Melissa.geo_point(:zip => 'zip', :plus4 => 'plus4', :delivery_point_code => 'delivery_point_code')
+
   ```
 
 The calls to Melissa Data library will be attempted only if Melissa Data library is loaded.

@@ -118,10 +118,8 @@ module Melissa
         end
       end
     rescue LoadError => e
-      puts "Melissa GeoPoint library was not loaded!"
       Melissa.config.geo_point_library_loaded = false
     else
-      puts "Loaded Melissa GeoPoint librarry"
       Melissa.config.geo_point_library_loaded = true
     end
   end
