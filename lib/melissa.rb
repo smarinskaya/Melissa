@@ -35,16 +35,15 @@ module Melissa
   end
 end
 
-require 'melissa/railtie' if defined?(Rails)
-
-require "melissa/version"
 require "melissa/config"
+require "melissa/version"
 require 'melissa/addr_obj'
 require 'melissa/geo_point'
 require 'melissa/addr_obj_live'
 require 'melissa/geo_point_live'
 require 'melissa/addr_obj_mock'
 require 'melissa/geo_point_mock'
+require 'melissa/railtie' if defined?(Rails)
 
 
 #valid_address_obj = ::Melissa.adrr_obj(:address => 'valid street', :city => 'Tampa', :state => 'FL', :zip => '33626')
