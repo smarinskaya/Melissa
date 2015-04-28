@@ -13,7 +13,7 @@ module Melissa
 
         config_hash.each do |key, value|
           value = value.to_sym if key == 'mode'
-          send("Melissa.config.#{key}=", value)
+          Melissa.config.send("#{key}=", value)
         end
       end
     end
