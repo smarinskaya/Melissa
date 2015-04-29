@@ -4,12 +4,12 @@ class MelissaTest < Minitest::Test
 
   describe 'Melissa.addr_obj' do
     before do
-      Melissa.config.mode = :live if  Melissa.config.addr_obj_lib_loaded
+      Melissa.config.mode = :live
     end
 
     describe "live mode" do
       it 'initializes AddrObjLive object' do
-        skip "Not run in mock mode" unless Melissa.config.mode == :live
+        skip "Not run, Melissa library not loaded" unless Melissa::AddrObjLive.lib_loaded?
         valid_address = Melissa.addr_obj(
             :address => '9802 Brompton Dr',
             :city => 'Tampa',
@@ -39,12 +39,13 @@ class MelissaTest < Minitest::Test
 
   describe 'Melissa.geo_point' do
     before do
-      Melissa.config.mode = :live if  Melissa.config.addr_obj_lib_loaded
+      Melissa.config.mode = :live
     end
 
     describe "live mode" do
       it 'initializes GeoPointLive object' do
-        skip "Not run in mock mode" unless Melissa.config.mode == :live
+        skip "Not run, Melissa library not loaded" unless Melissa::AddrObjLive.lib_loaded?
+        skip "Not run, Melissa library not loaded" unless Melissa::GeoPointLive.lib_loaded?
         valid_addr_obj = Melissa.addr_obj(
             :address => '9802 Brompton Dr',
             :city => 'Tampa',
