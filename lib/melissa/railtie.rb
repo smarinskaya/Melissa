@@ -15,10 +15,10 @@ module Melissa
             Melissa.config.send("#{key}=", value)
           end
         else
-          Meliss.config.mode = :mock
+          Melissa.config.mode = :mock
         end
       else
-        Meliss.config.mode = :mock
+        Melissa.config.mode = :mock
       end
     end
   end
