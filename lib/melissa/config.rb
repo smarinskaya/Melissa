@@ -6,8 +6,7 @@ module Melissa
 
   class Config
 
-    attr_accessor :mode, :license, :data_path, :addr_obj_lib, :addr_obj_lib_loaded
-    attr_accessor :geo_point_lib, :geo_point_lib_loaded
+    attr_accessor :mode, :license, :data_path, :addr_obj_lib, :geo_point_lib
 
     def initialize
       #It is recommended to read the following config options from environment variables
@@ -16,8 +15,8 @@ module Melissa
       #MD_LICENSE. This allows you to update your license string without editing
       #and recompiling your code
 
+      self.home = ENV['MELISSA_HOME'] || '/usr/local/dqs'
       self.config_path = ENV['MELISSA_CONFIG_PATH'] if ENV['MELISSA_CONFIG_PATH']
-      self.home = ENV['MELISSA_HOME'] if ENV['MELISSA_HOME']
       @data_path = ENV['MELISSA_DATA_PATH'] if ENV['MELISSA_DATA_PATH']
       @addr_obj_lib = ENV['MELISSA_ADDR_OBJ_LIB'] if ENV['MELISSA_ADDR_OBJ_LIB']
       @geo_point_lib = ENV['MELISSA_GEO_POINT_LIB'] if ENV['MELISSA_GEO_POINT_LIB']
@@ -48,16 +47,5 @@ module Melissa
       @geo_point_lib = "#{home}/GeoObj/libmdGeo.so"
       @data_path = "#{home}/data"
     end
-
-    def addr_obj_lib_loaded=(value)
-      @addr_obj_lib_loaded = value
-      @mode ||= :live if value
-    end
-
-    def geo_point_library_loaded=(value)
-      @geo_point_lib_loaded = value
-      @mode ||= :live if value
-    end
   end
 end
-

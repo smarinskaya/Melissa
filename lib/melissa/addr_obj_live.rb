@@ -2,12 +2,12 @@ require 'ffi'
 
 module Melissa
   class AddrObjLive < AddrObj
-    begin
+
+    def self.lib_loaded?
+      return @lib_loaded if defined?(@lib_loaded)
       extend FFI::Library
 
-      ffi_lib Melissa.config.addr_obj_lib if defined?(FFI)
-      puts "defined?(FFI): #{defined?(FFI)}"
-      puts "path to Melissa.config.addr_obj_lib: #{Melissa.config.addr_obj_lib}"
+      ffi_lib Melissa.config.addr_obj_lib
       attr_functions = @@melissa_attributes.map { |name| ["mdAddrGet#{name}".to_sym, [:pointer], :string] }
 
       functions = attr_functions + [
@@ -45,75 +45,78 @@ module Melissa
 
       # Get all the attributes out up-front so we can destroy the h_addr_lib object
       class_eval <<-EOS
-      define_method(:fill_attributes) do |h_addr_lib|
-        #{@@melissa_attributes.map { |name| "@#{name.underscore} = mdAddrGet#{name}(h_addr_lib)" }.join("\n")}
-      end
+        define_method(:fill_attributes) do |h_addr_lib|
+          #{@@melissa_attributes.map { |name| "@#{name.underscore} = mdAddrGet#{name}(h_addr_lib)" }.join("\n")}
+        end
       EOS
+    rescue LoadError => e
+      return @lib_loaded = false
+    else
+      return @lib_loaded = true
+    end
 
-      def self.with_mdaddr
+    def self.with_mdaddr
+      raise "Unable to load melissa library #{Melissa.config.addr_obj_lib}" unless self.lib_loaded?
+      begin
         h_addr_lib = mdAddrCreate
         mdAddrSetLicenseString(h_addr_lib, Melissa.config.license)
         mdAddrSetPathToUSFiles(h_addr_lib, Melissa.config.data_path)
         mdAddrInitializeDataFiles(h_addr_lib)
         yield h_addr_lib
       ensure
-        mdAddrDestroy(h_addr_lib)
+        mdAddrDestroy(h_addr_lib) if h_addr_lib
       end
+    end
 
-      #This function returns a date value corresponding to the date when the current license
-      #string expires.
+    #This function returns a date value corresponding to the date when the current license
+    #string expires.
 
-      def self.license_expiration_date
-        Date.parse(with_mdaddr { |h_addr_lib| mdAddrGetLicenseExpirationDate(h_addr_lib) })
+    def self.license_expiration_date
+      Date.parse(with_mdaddr { |h_addr_lib| mdAddrGetLicenseExpirationDate(h_addr_lib) })
+    end
+
+    def self.days_until_license_expiration
+      #I compare Date objects. I think it is more accurate.
+      #self.license_expiration_date returns string in format: "YYYY-MM-DD"
+      (self.license_expiration_date - Date.today).to_i
+    end
+
+   # U.S. Only — This function returns a date value representing the
+   # date when the current U.S. data files expire. This date enables you to confirm that the
+   # data files you are using are the latest available.
+
+    def self.data_expiration_date
+      Date.strptime(with_mdaddr { |h_addr_lib| mdAddrGetExpirationDate(h_addr_lib) }, '%m-%d-%Y')
+    end
+
+    def self.days_until_data_expiration
+      (self.data_expiration_date - Date.today).to_i
+    end
+
+    def initialize(opts)
+      self.class.with_mdaddr do |h_addr_lib|
+        # clear any properties from a previous call
+        mdAddrClearProperties(h_addr_lib)
+
+        mdAddrSetCompany(h_addr_lib, opts[:company] || '');
+        mdAddrSetAddress(h_addr_lib, opts[:address] || '');
+        mdAddrSetAddress2(h_addr_lib, opts[:address2] || '');
+        mdAddrSetSuite(h_addr_lib, opts[:suite] || '');
+        mdAddrSetCity(h_addr_lib, opts[:city] || '');
+        mdAddrSetState(h_addr_lib, opts[:state] || '');
+        mdAddrSetZip(h_addr_lib, opts[:zip] || '');
+        mdAddrSetUrbanization(h_addr_lib, opts[:urbanization] || '');
+        mdAddrSetCountryCode(h_addr_lib, opts[:country_code] || '');
+        mdAddrVerifyAddress(h_addr_lib);
+
+        @resultcodes = mdAddrGetResults(h_addr_lib).split(',')
+        fill_attributes(h_addr_lib)
       end
+    end
 
-      def self.days_until_license_expiration
-        #I compare Date objects. I think it is more accurate.
-        #self.license_expiration_date returns string in format: "YYYY-MM-DD"
-        (self.license_expiration_date - Date.today).to_i
-      end
-
-     # U.S. Only — This function returns a date value representing the
-     # date when the current U.S. data files expire. This date enables you to confirm that the
-     # data files you are using are the latest available.
-
-      def self.data_expiration_date
-        Date.strptime(with_mdaddr { |h_addr_lib| mdAddrGetExpirationDate(h_addr_lib) }, '%m-%d-%Y')
-      end
-
-      def self.days_until_data_expiration
-        (self.data_expiration_date - Date.today).to_i
-      end
-
-      def initialize(opts)
-        self.class.with_mdaddr do |h_addr_lib|
-          # clear any properties from a previous call
-          mdAddrClearProperties(h_addr_lib)
-
-          mdAddrSetCompany(h_addr_lib, opts[:company] || '');
-          mdAddrSetAddress(h_addr_lib, opts[:address] || '');
-          mdAddrSetAddress2(h_addr_lib, opts[:address2] || '');
-          mdAddrSetSuite(h_addr_lib, opts[:suite] || '');
-          mdAddrSetCity(h_addr_lib, opts[:city] || '');
-          mdAddrSetState(h_addr_lib, opts[:state] || '');
-          mdAddrSetZip(h_addr_lib, opts[:zip] || '');
-          mdAddrSetUrbanization(h_addr_lib, opts[:urbanization] || '');
-          mdAddrSetCountryCode(h_addr_lib, opts[:country_code] || '');
-          mdAddrVerifyAddress(h_addr_lib);
-
-          @resultcodes = mdAddrGetResults(h_addr_lib).split(',')
-          fill_attributes(h_addr_lib)
-        end
-      end
-
-      def valid?
-        # Make sure there is at least 1 good code and no bad codes
-        (@resultcodes & @@good_codes).present? && (@resultcodes & @@bad_codes).empty?
-      end
-    rescue LoadError => e
-      Melissa.config.addr_obj_lib_loaded = false
-    else
-      Melissa.config.addr_obj_lib_loaded = true
+    def valid?
+      # Make sure there is at least 1 good code and no bad codes
+      (@resultcodes & @@good_codes).present? && (@resultcodes & @@bad_codes).empty?
     end
   end
 end

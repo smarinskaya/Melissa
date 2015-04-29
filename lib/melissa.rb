@@ -1,3 +1,13 @@
+require "melissa/config"
+require "melissa/version"
+require 'melissa/addr_obj'
+require 'melissa/geo_point'
+require 'melissa/addr_obj_live'
+require 'melissa/geo_point_live'
+require 'melissa/addr_obj_mock'
+require 'melissa/geo_point_mock'
+require 'melissa/railtie' if defined?(Rails)
+
 module Melissa
 
   class << self
@@ -6,7 +16,6 @@ module Melissa
 
   def self.addr_obj(attrs)
     if config.mode == :live
-      raise LoadError, "Melissa AddrObj was not loaded!" unless config.addr_obj_lib_loaded
       AddrObjLive.new(attrs)
     else
       AddrObjMock.new(attrs)
@@ -15,7 +24,6 @@ module Melissa
 
   def self.geo_point(attrs)
     if config.mode == :live
-      raise LoadError, "Melissa GeoPoint object was not loaded!" unless config.geo_point_lib_loaded
       GeoPointLive.new(attrs)
     else
       GeoPointMock.new(attrs)
@@ -34,17 +42,6 @@ module Melissa
     yield(config)
   end
 end
-
-require "melissa/config"
-require "melissa/version"
-require 'melissa/addr_obj'
-require 'melissa/geo_point'
-require 'melissa/addr_obj_live'
-require 'melissa/geo_point_live'
-require 'melissa/addr_obj_mock'
-require 'melissa/geo_point_mock'
-require 'melissa/railtie' if defined?(Rails)
-
 
 #valid_address_obj = ::Melissa.adrr_obj(:address => 'valid street', :city => 'Tampa', :state => 'FL', :zip => '33626')
 #puts "addr=#{valid_address_obj.address}"

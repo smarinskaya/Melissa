@@ -5,12 +5,12 @@ class GeoPointTest < Minitest::Test
 
   describe Melissa::GeoPoint do
     before do
-      Melissa.config.mode = :live  if  Melissa.config.addr_obj_lib_loaded
+      Melissa.config.mode = :live
     end
 
     describe 'valid?' do
       it 'creates valid GeoPoint object from valid Address Object' do
-        skip "Not run in mock mode" unless Melissa.config.mode == :live
+        skip "Not run, Melissa library not loaded" unless Melissa::GeoPointLive.lib_loaded?
         valid_addr_obj = Melissa.addr_obj(
             :address => '2517 SURFWOOD DR',
             :city => 'LAS VEGAS',
@@ -28,7 +28,7 @@ class GeoPointTest < Minitest::Test
         #=> 480
       end
       it 'creates valid GeoPoint object from the Hash' do
-        skip "Not run in mock mode" unless Melissa.config.mode == :live
+        skip "Not run, Melissa library not loaded" unless Melissa::GeoPointLive.lib_loaded?
         geo_point_obj= Melissa.geo_point(
             :zip => '89128',
             :plus4 =>  '7182',
@@ -48,7 +48,7 @@ class GeoPointTest < Minitest::Test
 
     describe 'number of days till licence expires' do
       it 'checks if we have more than 30 days till license expiration date' do
-        skip "Not run in mock mode" unless Melissa.config.mode == :live
+        skip "Not run, Melissa library not loaded" unless Melissa::GeoPointLive.lib_loaded?
         valid_addr_obj = Melissa.addr_obj(
             :address => '2517 SURFWOOD DR',
             :city => 'LAS VEGAS',
@@ -61,5 +61,3 @@ class GeoPointTest < Minitest::Test
     end
   end
 end
-
-
