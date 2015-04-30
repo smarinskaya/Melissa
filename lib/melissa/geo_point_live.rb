@@ -41,6 +41,7 @@ module Melissa
         end
       EOS
     rescue LoadError => e
+      puts "WARNING: #{Melissa.config.geo_point_lib} could not be loaded"
       return @lib_loaded = false
     else
       return @lib_loaded = true

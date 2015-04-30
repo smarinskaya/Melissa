@@ -14,6 +14,7 @@ module Melissa
       #The license string should be entered as an environment variable named
       #MD_LICENSE. This allows you to update your license string without editing
       #and recompiling your code
+      self.mode = :live
 
       self.home = ENV['MELISSA_HOME'] || '/usr/local/dqs'
       self.config_path = ENV['MELISSA_CONFIG_PATH'] if ENV['MELISSA_CONFIG_PATH']

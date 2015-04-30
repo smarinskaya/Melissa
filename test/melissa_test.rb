@@ -11,10 +11,10 @@ class MelissaTest < Minitest::Test
       it 'initializes AddrObjLive object' do
         skip "Not run, Melissa library not loaded" unless Melissa::AddrObjLive.lib_loaded?
         valid_address = Melissa.addr_obj(
-            :address => '9802 Brompton Dr',
-            :city => 'Tampa',
-            :state => 'Fl',
-            :zip => '33626'
+            address: '9802 Brompton Dr',
+            city: 'Tampa',
+            state: 'Fl',
+            zip: '33626'
         )
         assert_kind_of Melissa::AddrObjLive, valid_address
       end
@@ -27,10 +27,10 @@ class MelissaTest < Minitest::Test
 
       it 'initializes AddrObjMock object' do
         valid_address = Melissa.addr_obj(
-            :address => '9802 Brompton Dr',
-            :city => 'Tampa',
-            :state => 'Fl',
-            :zip => '33626'
+            address: '9802 Brompton Dr',
+            city: 'Tampa',
+            state: 'Fl',
+            zip: '33626'
         )
         assert_kind_of Melissa::AddrObjMock, valid_address
       end
@@ -47,10 +47,10 @@ class MelissaTest < Minitest::Test
         skip "Not run, Melissa library not loaded" unless Melissa::AddrObjLive.lib_loaded?
         skip "Not run, Melissa library not loaded" unless Melissa::GeoPointLive.lib_loaded?
         valid_addr_obj = Melissa.addr_obj(
-            :address => '9802 Brompton Dr',
-            :city => 'Tampa',
-            :state => 'Fl',
-            :zip => '33626'
+            address: '9802 Brompton Dr',
+            city: 'Tampa',
+            state: 'Fl',
+            zip: '33626'
         )
         geo_point_obj = Melissa.geo_point(valid_addr_obj)
         assert_kind_of Melissa::GeoPointLive, geo_point_obj
@@ -64,10 +64,10 @@ class MelissaTest < Minitest::Test
 
       it 'initializes GeoPointMock object' do
         valid_addr_obj = Melissa.addr_obj(
-            :address => '9802 Brompton Dr',
-            :city => 'Tampa',
-            :state => 'Fl',
-            :zip => '33626'
+            address: '9802 Brompton Dr',
+            city: 'Tampa',
+            state: 'Fl',
+            zip: '33626'
         )
         geo_point_obj = Melissa.geo_point(valid_addr_obj)
         assert_kind_of Melissa::GeoPointMock, geo_point_obj

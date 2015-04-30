@@ -50,6 +50,7 @@ module Melissa
         end
       EOS
     rescue LoadError => e
+      puts "WARNING: #{Melissa.config.addr_obj_lib} could not be loaded"
       return @lib_loaded = false
     else
       return @lib_loaded = true

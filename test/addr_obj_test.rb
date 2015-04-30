@@ -12,10 +12,10 @@ class AddrObjTest < Minitest::Test
         it 'handles valid data' do
           skip "Not run, Melissa library not loaded" unless Melissa::AddrObjLive.lib_loaded?
           valid_address = Melissa.addr_obj(
-              :address => '2517 Surfwood Dr',
-              :city => 'Las Vegas',
-              :state => 'NV',
-              :zip => '89128'
+              address: '2517 Surfwood Dr',
+              city: 'Las Vegas',
+              state: 'NV',
+              zip: '89128'
           )
           assert valid_address.valid?
           assert_equal '2517 Surfwood Dr', valid_address.address
@@ -27,10 +27,10 @@ class AddrObjTest < Minitest::Test
           skip "Not run, Melissa library not loaded" unless Melissa::AddrObjLive.lib_loaded?
           # Zip points to Schenectady, NY
           invalid_address = Melissa.addr_obj(
-              :address => '123 Who Dr',
-              :city => 'WhoVille',
-              :state => 'IN',
-              :zip => '12345'
+              address: '123 Who Dr',
+              city: 'WhoVille',
+              state: 'IN',
+              zip: '12345'
           )
           assert !invalid_address.valid?
         end
@@ -40,10 +40,10 @@ class AddrObjTest < Minitest::Test
         it 'sets delivery point for valid data' do
           skip "Not run, Melissa library not loaded" unless Melissa::AddrObjLive.lib_loaded?
           valid_address = Melissa.addr_obj(
-              :address => '2517 Surfwood Dr',
-              :city => 'Las Vegas',
-              :state => 'NV',
-              :zip => '89128'
+              address: '2517 Surfwood Dr',
+              city: 'Las Vegas',
+              state: 'NV',
+              zip: '89128'
           )
           assert_equal '89128718217', valid_address.delivery_point
         end
@@ -70,10 +70,10 @@ class AddrObjTest < Minitest::Test
       describe "valid?" do
         it 'handles valid data' do
           valid_address = Melissa.addr_obj(
-              :address => '9802 Brompton Dr',
-              :city => 'Tampa',
-              :state => 'Fl',
-              :zip => '33626'
+              address: '9802 Brompton Dr',
+              city: 'Tampa',
+              state: 'Fl',
+              zip: '33626'
           )
           assert valid_address.valid?
           assert_equal '9802 Brompton Dr', valid_address.address
@@ -84,10 +84,10 @@ class AddrObjTest < Minitest::Test
         it 'flags invalid data' do
           # Zip points to Schenectady, NY
           invalid_address = Melissa.addr_obj(
-              :address => '123 Who Dr',
-              :city => 'WhoVille',
-              :state => 'IN',
-              :zip => ''
+              address: '123 Who Dr',
+              city: 'WhoVille',
+              state: 'IN',
+              zip: ''
           )
           assert !invalid_address.valid?
         end
@@ -96,10 +96,10 @@ class AddrObjTest < Minitest::Test
       describe "delivery_point" do
         it 'sets delivery point for valid data' do
           valid_address = Melissa.addr_obj(
-              :address => '9802 Brompton Dr',
-              :city => 'Tampa',
-              :state => 'Fl',
-              :zip => '33626'
+              address: '9802 Brompton Dr',
+              city: 'Tampa',
+              state: 'Fl',
+              zip: '33626'
           )
           assert_equal '33626123426', valid_address.delivery_point
         end

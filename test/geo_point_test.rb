@@ -12,10 +12,10 @@ class GeoPointTest < Minitest::Test
       it 'creates valid GeoPoint object from valid Address Object' do
         skip "Not run, Melissa library not loaded" unless Melissa::GeoPointLive.lib_loaded?
         valid_addr_obj = Melissa.addr_obj(
-            :address => '2517 SURFWOOD DR',
-            :city => 'LAS VEGAS',
-            :state => 'NV',
-            :zip => '89128'
+            address: '2517 SURFWOOD DR',
+            city: 'LAS VEGAS',
+            state: 'NV',
+            zip: '89128'
         )
         geo_point_obj = Melissa.geo_point(valid_addr_obj)
         assert geo_point_obj.valid?
@@ -30,9 +30,9 @@ class GeoPointTest < Minitest::Test
       it 'creates valid GeoPoint object from the Hash' do
         skip "Not run, Melissa library not loaded" unless Melissa::GeoPointLive.lib_loaded?
         geo_point_obj= Melissa.geo_point(
-            :zip => '89128',
-            :plus4 =>  '7182',
-            :delivery_point_code => '17'
+            zip: '89128',
+            plus4: '7182',
+            delivery_point_code: '17'
         )
 
         assert geo_point_obj.valid?
@@ -50,10 +50,10 @@ class GeoPointTest < Minitest::Test
       it 'checks if we have more than 30 days till license expiration date' do
         skip "Not run, Melissa library not loaded" unless Melissa::GeoPointLive.lib_loaded?
         valid_addr_obj = Melissa.addr_obj(
-            :address => '2517 SURFWOOD DR',
-            :city => 'LAS VEGAS',
-            :state => 'NV',
-            :zip => '89128'
+            address: '2517 SURFWOOD DR',
+            city: 'LAS VEGAS',
+            state: 'NV',
+            zip: '89128'
         )
         geo_point = Melissa.geo_point(valid_addr_obj)
         assert_operator 30, :<, geo_point.class.days_until_license_expiration

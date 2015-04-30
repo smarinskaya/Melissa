@@ -79,10 +79,10 @@ the values to validate each other.
   ```ruby
   #create AddrObj
    valid_addr_obj = ::Melissa.addr_obj(
-              :address => '9802 Brompton Dr',
-              :city => 'Tampa',
-              :state => 'Fl',
-              :zip => '33626'
+              address: '9802 Brompton Dr',
+              city: 'Tampa',
+              state: 'Fl',
+              zip: '33626'
           )
    #use it to get deliverypoint
    deliverypoint = valid_addr_obj.delivery_point
@@ -97,8 +97,14 @@ the values to validate each other.
 
   ```
 
-The calls to Melissa Data library will be attempted only if Melissa Data library is loaded.
-Otherwise mock objects will be used. This way there is no need to install Melissa Data library on development machine.
+The calls to Melissa Data library will be attempted only if melissa gem config mode is set to live, and Melissa Data
+ library is loaded. This is the default mode for the gem.
+
+```
+Melissa.config.mode = :live
+```
+
+Otherwise mock objects can be used. This way there is no need to install Melissa Data library on development machine.
 The following rules are used in mocking AddrObj Library:
 1. if zip_code is present, addres object is valid.
 2. to mock delivery point: "#{zip_code}1234#{last 2 digits of zip code}".
@@ -107,12 +113,33 @@ The following rules are used in mocking AddrObj Library:
 Mocked GeoPoint object will return following values:
 
     ```ruby
-        @latitude = 36.20687
-        @longitude = -115.27857
-        @time_zone_code = '08'
-        @resultcodes = ['AS01']
+        @latitude = 27.850397
+        @longitude = -82.659555
+        @time_zone_code = '05'
+        @resultcodes = ['GS05']
         @is_valid = true
     ```
+
+To use melissa gem from rails application, see railtie.rb, and create melissa.yml in the application, based
+on the example below:
+
+```
+default:  &defaults
+ config_path: /etc/melissa
+ mode:        live
+
+production:
+  <<:       *defaults
+
+release:
+  <<:       *defaults
+
+hotfix:
+  <<:       *defaults
+```
+
+By using this set up the attempt to call Melissa data library will be made in production, release and hotfix environments,
+and mock objects will be used in test and development.
 
 ## Meta
 

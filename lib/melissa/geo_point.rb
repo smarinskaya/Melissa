@@ -58,6 +58,16 @@ module Melissa
       @is_valid
     end
 
+    #Added this method to have an ability to stub latitude if needed
+    def latitude
+      @latitude
+    end
+
+    #Added this method to have an ability to stub longitude if needed
+    def longitude
+      @longitude
+    end
+
     def time_zone_offset
       GeoPoint.time_zone_offset(self.time_zone_code, @addr_obj.state)
     end
