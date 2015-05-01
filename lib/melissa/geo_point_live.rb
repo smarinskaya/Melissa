@@ -49,6 +49,8 @@ module Melissa
 
     def self.with_mdgeo
       raise "Unable to load melissa library #{Melissa.config.addr_obj_lib}" unless self.lib_loaded?
+      raise "Unable to find the license for Melissa Data library #{Melissa.config.license}" unless Melissa.config.license.present?
+      raise "Unable to find data files for Melissa Data library #{Melissa.config.data_path}" unless Melissa.config.data_path.present?
       begin
         mdGeo = mdGeoCreate
         mdGeoSetLicenseString(mdGeo, Melissa.config.license)

@@ -58,6 +58,8 @@ module Melissa
 
     def self.with_mdaddr
       raise "Unable to load melissa library #{Melissa.config.addr_obj_lib}" unless self.lib_loaded?
+      raise "Unable to find the license for Melissa Data library #{Melissa.config.license}" unless Melissa.config.license.present?
+      raise "Unable to find data files for Melissa Data library #{Melissa.config.data_path}" unless Melissa.config.data_path.present?
       begin
         h_addr_lib = mdAddrCreate
         mdAddrSetLicenseString(h_addr_lib, Melissa.config.license)
