@@ -10,13 +10,10 @@ module Melissa
       EOS
     end
 
-    def initialize(addr_obj)
+    def initialize(opts)
       @is_valid = false
-
-      if addr_obj.kind_of?(AddrObj)
-        @addr_obj = addr_obj
-      else
-        raise "Invalid call to GeoPoint, unknown object #{addr_obj.inspect}"
+      unless opts.kind_of?(AddrObj) || opts.kind_of?(Hash)
+        raise "Invalid call to GeoPoint, unknown object #{opts.inspect}"
       end
       @latitude = 27.850397
       @longitude = -82.659555
