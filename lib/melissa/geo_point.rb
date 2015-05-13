@@ -39,20 +39,6 @@ module Melissa
     #@@bad_codes   = ['GE01', 'GE02']
     @@fatal_codes = ['GE03', 'GE04', 'GE05']
 
-    @@time_zones = {
-        '04' => 'Atlantic/Bermuda',
-        '05' => 'US/Eastern',
-        '06' => 'US/Central',
-        '07' => 'US/Mountain',
-        '08' => 'US/Pacific',
-        '09' => 'US/Alaska',
-        '10' => 'US/Hawaii',
-        '11' => 'US/Samoa',
-        '13' => 'Pacific/Majuro',
-        '14' => 'Pacific/Guam',
-        '15' => 'Pacific/Palau'
-    }
-
     def valid?
       # Make sure there is at least 1 good code
       @is_valid
@@ -68,13 +54,8 @@ module Melissa
       @longitude
     end
 
-    def time_zone_offset
-      GeoPoint.time_zone_offset(self.time_zone_code, @addr_obj.state)
-    end
-
-    # Hack for AddrObj to share code
-    def self.time_zone_offset(time_zone_code, state=nil)
-      time_zone = @@time_zones[time_zone_code]
+    def time_zone_offset(state=nil)
+      time_zone = TIME_ZONES[self.time_zone_code]
       return nil unless time_zone
       time_zone = 'US/Arizona' if state == 'AZ'
       return Time.now.in_time_zone(time_zone).utc_offset / -60

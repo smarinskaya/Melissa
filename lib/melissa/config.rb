@@ -4,6 +4,20 @@ module Melissa
 
   MODES = [:mock, :live]
 
+  TIME_ZONES = {
+      '04' => 'Atlantic/Bermuda',
+      '05' => 'US/Eastern',
+      '06' => 'US/Central',
+      '07' => 'US/Mountain',
+      '08' => 'US/Pacific',
+      '09' => 'US/Alaska',
+      '10' => 'US/Hawaii',
+      '11' => 'US/Samoa',
+      '13' => 'Pacific/Majuro',
+      '14' => 'Pacific/Guam',
+      '15' => 'Pacific/Palau'
+  }
+
   class Config
 
     attr_accessor :mode, :license, :data_path, :addr_obj_lib, :geo_point_lib

@@ -18,6 +18,7 @@ module Melissa
       #@urbanization        = opts[:urbanization] || ''
       @resultcodes = ['AS01']
       @address_type_string = 'Street'
+      @time_zone_code = '05'
     end
 
     #Mock

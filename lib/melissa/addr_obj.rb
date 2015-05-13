@@ -57,7 +57,10 @@ module Melissa
     end
 
     def time_zone_offset
-      GeoPoint.time_zone_offset(self.time_zone_code, self.state)
+      time_zone = TIME_ZONES[self.time_zone_code]
+      return nil unless time_zone
+      time_zone = 'US/Arizona' if self.state == 'AZ'
+      return Time.now.in_time_zone(time_zone).utc_offset / -60
     end
 
     def address_struct
