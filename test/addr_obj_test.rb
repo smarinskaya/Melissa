@@ -22,7 +22,7 @@ class AddrObjTest < Minitest::Test
           assert_equal 'Las Vegas', valid_address.city
           assert_equal '89128718217', valid_address.delivery_point
           offset = Time.now.in_time_zone('US/Pacific').dst? ? 420 : 480
-          assert_equal offset, valid_address.time_zone_offset(valid_address.state)
+          assert_equal offset, valid_address.time_zone_offset
         end
 
         it 'flags invalid data' do
