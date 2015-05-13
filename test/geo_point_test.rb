@@ -21,7 +21,7 @@ class GeoPointTest < Minitest::Test
         assert geo_point_obj.valid?
         assert_includes 36.2..36.3, geo_point_obj.latitude
         assert_includes -115.3..-115.2, geo_point_obj.longitude
-        offset = Time.now.in_time_zone('US/Eastern').dst? ? 360 : 420
+        offset = Time.now.in_time_zone('US/Pacific').dst? ? 420 : 480
         assert_equal offset, geo_point_obj.time_zone_offset(valid_addr_obj.state)
       end
       it 'creates valid GeoPoint object from the Hash' do
@@ -35,8 +35,8 @@ class GeoPointTest < Minitest::Test
         assert geo_point_obj.valid?
         assert_includes 36.2..36.3, geo_point_obj.latitude
         assert_includes -115.3..-115.2, geo_point_obj.longitude
-        offset = Time.now.in_time_zone('US/Eastern').dst? ? 360 : 420
-        assert_equal offset, geo_point.time_zone_offset
+        offset = Time.now.in_time_zone('US/Pacific').dst? ? 420 : 480
+        assert_equal offset, geo_point_obj.time_zone_offset
       end
     end
 
