@@ -53,5 +53,25 @@ class GeoPointTest < Minitest::Test
         assert_operator 30, :<, geo_point.class.days_until_license_expiration
       end
     end
+
+    describe 'callback' do
+      it 'executes added callback' do
+        skip "Not run, Melissa library not loaded" unless Melissa::GeoPointLive.lib_loaded?
+        callback_flag = false
+        Melissa::GeoPoint.add_callback do
+          callback_flag = true
+        end
+
+        valid_addr_obj = Melissa.addr_obj(
+          address: '2517 SURFWOOD DR',
+          city: 'LAS VEGAS',
+          state: 'NV',
+          zip: '89128'
+        )
+        Melissa.geo_point(valid_addr_obj)
+
+        assert callback_flag
+      end
+    end
   end
 end

@@ -63,6 +63,25 @@ class AddrObjTest < Minitest::Test
           assert_operator 30, :<, valid_address.class.days_until_license_expiration
         end
       end
+
+      describe 'callback' do
+        it 'executes added callback' do
+          skip "Not run, Melissa library not loaded" unless Melissa::AddrObjLive.lib_loaded?
+          callback_flag = false
+          Melissa::AddrObj.add_callback do
+            callback_flag = true
+          end
+
+          valid_address = Melissa.addr_obj(
+            address: '2517 Surfwood Dr',
+            city: 'Las Vegas',
+            state: 'NV',
+            zip: '89128'
+          )
+
+          assert callback_flag
+        end
+      end
     end
 
     describe "mock mode" do
@@ -104,6 +123,24 @@ class AddrObjTest < Minitest::Test
               zip: '33626'
           )
           assert_equal '33626123426', valid_address.delivery_point
+        end
+      end
+
+      describe 'callback' do
+        it 'does not execute added callback' do
+          callback_flag = false
+          Melissa::AddrObj.add_callback do
+            callback_flag = true
+          end
+
+          valid_address = Melissa.addr_obj(
+            address: '2517 Surfwood Dr',
+            city: 'Las Vegas',
+            state: 'NV',
+            zip: '89128'
+          )
+
+          assert !callback_flag
         end
       end
     end
