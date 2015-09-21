@@ -52,6 +52,13 @@ module Melissa
     @@good_codes = ['AS01', 'AS02']
     @@bad_codes = ['AC02', 'AC03']
 
+    @@callbacks = ThreadSafe::Array.new
+
+    # Allow callbacks to intercept response and perform whatever misc stuff (hint: victim_statements)
+    def self.add_callback(&callback)
+      @@callbacks << callback
+    end
+
     def delivery_point
       "#{zip}#{plus4}#{delivery_point_code}"
     end

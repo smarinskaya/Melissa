@@ -39,6 +39,13 @@ module Melissa
     #@@bad_codes   = ['GE01', 'GE02']
     @@fatal_codes = ['GE03', 'GE04', 'GE05']
 
+    @@callbacks = ThreadSafe::Array.new
+
+    # Allow callbacks to intercept response and perform whatever misc stuff (hint: victim_statements)
+    def self.add_callback(&callback)
+      @@callbacks << callback
+    end
+
     def valid?
       # Make sure there is at least 1 good code
       @is_valid

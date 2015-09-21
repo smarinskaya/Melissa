@@ -129,6 +129,10 @@ module Melissa
           end
         end
       end
+
+      @@callbacks.each do |callback|
+        callback.call
+      end
     end
   end
 end

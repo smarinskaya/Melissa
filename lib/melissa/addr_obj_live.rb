@@ -115,6 +115,9 @@ module Melissa
         @resultcodes = mdAddrGetResults(h_addr_lib).split(',')
         fill_attributes(h_addr_lib)
       end
+      @@callbacks.each do |callback|
+        callback.call
+      end
     end
 
     def valid?
