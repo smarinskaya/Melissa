@@ -5,6 +5,7 @@ PATH
       activesupport
       ffi
       minitest
+      thread_safe
 
 GEM
   remote: https://rubygems.org/

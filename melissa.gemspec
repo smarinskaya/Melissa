@@ -18,4 +18,5 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'activesupport' # added to support underscore method.
   gem.add_dependency 'minitest'      # added as a dependency of activesupport and for testing.
   gem.add_dependency 'ffi'           #used for converting c libraries to ruby
+  gem.add_dependency 'thread_safe'   # added to support callbacks
 end

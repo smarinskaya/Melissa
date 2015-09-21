@@ -2,15 +2,14 @@ require 'test_helper'
 
 class AddrObjTest < Minitest::Test
   describe Melissa::AddrObj do
-
-    describe "live mode" do
+    describe 'live mode' do
       before do
         Melissa.config.mode = :live
       end
 
-      describe "valid?" do
+      describe 'valid?' do
         it 'handles valid data' do
-          skip "Not run, Melissa library not loaded" unless Melissa::AddrObjLive.lib_loaded?
+          skip 'Not run, Melissa library not loaded' unless Melissa::AddrObjLive.lib_loaded?
           valid_address = Melissa.addr_obj(
               address: '2517 Surfwood Dr',
               city: 'Las Vegas',
@@ -26,7 +25,7 @@ class AddrObjTest < Minitest::Test
         end
 
         it 'flags invalid data' do
-          skip "Not run, Melissa library not loaded" unless Melissa::AddrObjLive.lib_loaded?
+          skip 'Not run, Melissa library not loaded' unless Melissa::AddrObjLive.lib_loaded?
           # Zip points to Schenectady, NY
           invalid_address = Melissa.addr_obj(
               address: '123 Who Dr',
@@ -38,9 +37,9 @@ class AddrObjTest < Minitest::Test
         end
       end
 
-      describe "delivery_point" do
+      describe 'delivery_point' do
         it 'sets delivery point for valid data' do
-          skip "Not run, Melissa library not loaded" unless Melissa::AddrObjLive.lib_loaded?
+          skip 'Not run, Melissa library not loaded' unless Melissa::AddrObjLive.lib_loaded?
           valid_address = Melissa.addr_obj(
               address: '2517 Surfwood Dr',
               city: 'Las Vegas',
@@ -53,7 +52,7 @@ class AddrObjTest < Minitest::Test
 
       describe 'number of days till licence expires' do
         it 'checks if we have more than 30 days till license expiration date' do
-          skip "Not run, Melissa library not loaded" unless Melissa::AddrObjLive.lib_loaded?
+          skip 'Not run, Melissa library not loaded' unless Melissa::AddrObjLive.lib_loaded?
           valid_address = Melissa.addr_obj(
               :address => '2517 Surfwood Dr',
               :city => 'Las Vegas',
@@ -66,7 +65,7 @@ class AddrObjTest < Minitest::Test
 
       describe 'callback' do
         it 'executes added callback' do
-          skip "Not run, Melissa library not loaded" unless Melissa::AddrObjLive.lib_loaded?
+          skip 'Not run, Melissa library not loaded' unless Melissa::AddrObjLive.lib_loaded?
           callback_flag = false
           Melissa::AddrObj.add_callback do
             callback_flag = true
@@ -84,11 +83,11 @@ class AddrObjTest < Minitest::Test
       end
     end
 
-    describe "mock mode" do
+    describe 'mock mode' do
       before do
         Melissa.config.mode = :mock
       end
-      describe "valid?" do
+      describe 'valid?' do
         it 'handles valid data' do
           valid_address = Melissa.addr_obj(
               address: '9802 Brompton Dr',
@@ -114,7 +113,7 @@ class AddrObjTest < Minitest::Test
         end
       end
 
-      describe "delivery_point" do
+      describe 'delivery_point' do
         it 'sets delivery point for valid data' do
           valid_address = Melissa.addr_obj(
               address: '9802 Brompton Dr',
