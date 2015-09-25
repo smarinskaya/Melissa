@@ -112,13 +112,13 @@ The following rules are used in mocking AddrObj Library:
 
 Mocked GeoPoint object will return following values:
 
-    ```ruby
+```ruby
         @latitude = 27.850397
         @longitude = -82.659555
         @time_zone_code = '05'
         @resultcodes = ['GS05']
         @is_valid = true
-    ```
+```
 
 To use melissa gem from rails application, see railtie.rb, and create melissa.yml in the application, based
 on the example below:
