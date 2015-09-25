@@ -76,7 +76,8 @@ Likewise, if :city and :state are populated, :zip is optional. If possible, it i
 best practice to pass all three values if possible, because Address Object will use
 the values to validate each other.
 
-  ```ruby
+```ruby
+
   #create AddrObj
    valid_addr_obj = ::Melissa.addr_obj(
               address: '9802 Brompton Dr',
@@ -95,7 +96,8 @@ the values to validate each other.
    #or
    geo_point_obj = ::Melissa.geo_point(:zip => 'zip', :plus4 => 'plus4', :delivery_point_code => 'delivery_point_code')
 
-  ```
+
+```
 
 The calls to Melissa Data library will be attempted only if melissa gem config mode is set to live, and Melissa Data
  library is loaded. This is the default mode for the gem.
