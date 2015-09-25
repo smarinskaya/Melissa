@@ -1,5 +1,7 @@
 # Melissa
 
+[![Build Status](https://travis-ci.org/cometaworks/Melissa.svg?branch=master)](https://travis-ci.org/cometaworks/Melissa)
+
 Configurable interface to Melissa Data Address and GeoCoder objects
 
 ##Description
