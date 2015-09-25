@@ -1,6 +1,6 @@
 # Melissa
 
-[![Build Status](https://travis-ci.org/cometaworks/Melissa.svg?branch=master)](https://travis-ci.org/cometaworks/Melissa)
+[![Build Status](https://travis-ci.org/smarinskaya/Melissa.svg?branch=master)](https://travis-ci.org/smarinskaya/Melissa)
 
 Configurable interface to Melissa Data Address and GeoCoder objects
 
@@ -155,6 +155,10 @@ and mock objects will be used in test and development.
 
 1. [Brad Pardee](https://github.com/bpardee)
 2. [Svetlana Marinskaya](https://github.com/smarinskaya)
+
+## Contributers
+
+1. [ybur-yug](https://github.com/ybur-yug)
 
 
 ##Aknowlegments
