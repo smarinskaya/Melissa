@@ -1,10 +1,10 @@
 language: ruby
 rvm:
   - 2.2.1
+  - jruby-1.7
+  - rbx
 
 script:
   - bundle exec rake test
 
-addons:
-  code_climate:
-    repo_token: 90cd321a9b4840777a7f4171b37338d14a6fccf593a07709f3444d26b0f627c8
+
