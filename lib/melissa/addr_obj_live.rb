@@ -116,6 +116,7 @@ module Melissa
         fill_attributes(h_addr_lib)
       end
       @@callbacks.each do |callback|
+        puts "In callback for AddrObjLive"
         callback.call
       end
     end

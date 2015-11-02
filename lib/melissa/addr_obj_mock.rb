@@ -19,6 +19,10 @@ module Melissa
       @resultcodes = ['AS01']
       @address_type_string = 'Street'
       @time_zone_code = '05'
+      @@callbacks.each do |callback|
+        puts "In callback for AddrObjMock"
+        callback.call
+      end
     end
 
     #Mock

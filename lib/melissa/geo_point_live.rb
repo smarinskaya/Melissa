@@ -131,6 +131,7 @@ module Melissa
       end
 
       @@callbacks.each do |callback|
+        puts "In callback for GeoPointLive"
         callback.call
       end
     end
