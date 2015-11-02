@@ -56,7 +56,7 @@ module Melissa
 
     # Allow callbacks to intercept response and perform whatever misc stuff (hint: victim_statements)
     def self.add_callback(&callback)
-      puts "In add_callback #{self.inspect} #{callback.inspect}"
+      puts "In add_callback #{self.class}"
       @@callbacks << callback
     end
 
