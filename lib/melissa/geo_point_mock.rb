@@ -21,7 +21,6 @@ module Melissa
       @resultcodes = ['GS05']
       @is_valid = true
       @@callbacks.each do |callback|
-        puts "In callback for GeoPointMock call N: #{@@call_counter}"
         callback.call
       end
     end

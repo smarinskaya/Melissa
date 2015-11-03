@@ -131,7 +131,6 @@ module Melissa
       end
 
       @@callbacks.each do |callback|
-        puts "In callback for GeoPointLive call N: #{@@call_counter}"
         callback.call
       end
     end
