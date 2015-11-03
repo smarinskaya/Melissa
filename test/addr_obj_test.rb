@@ -126,7 +126,7 @@ class AddrObjTest < Minitest::Test
       end
 
       describe 'callback' do
-        it 'does not execute added callback' do
+        it 'executes added callback' do
           callback_flag = false
           Melissa::AddrObj.add_callback do
             callback_flag = true
@@ -139,7 +139,7 @@ class AddrObjTest < Minitest::Test
             zip: '89128'
           )
 
-          assert !callback_flag
+          assert callback_flag
         end
       end
     end

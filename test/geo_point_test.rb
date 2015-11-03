@@ -81,7 +81,7 @@ class GeoPointTest < Minitest::Test
       end
 
       describe 'callback' do
-        it 'does not execute added callback' do
+        it 'executes added callback' do
           callback_flag = false
           Melissa::AddrObj.add_callback do
             callback_flag = true
@@ -95,7 +95,7 @@ class GeoPointTest < Minitest::Test
           )
           Melissa.geo_point(valid_addr_obj)
 
-          assert !callback_flag
+          assert callback_flag
         end
       end
     end

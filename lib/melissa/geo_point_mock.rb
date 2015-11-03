@@ -20,6 +20,10 @@ module Melissa
       @time_zone_code = '05'
       @resultcodes = ['GS05']
       @is_valid = true
+      @@callbacks.each do |callback|
+        puts "In callback for GeoPointMock call N: #{@@call_counter}"
+        callback.call
+      end
     end
   end
 end

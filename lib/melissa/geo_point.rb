@@ -41,9 +41,10 @@ module Melissa
 
     @@callbacks = ThreadSafe::Array.new
 
+    @@call_counter = 0
+
     # Allow callbacks to intercept response and perform whatever misc stuff (hint: victim_statements)
     def self.add_callback(&callback)
-      puts "In add_callback #{self.class}"
       @@callbacks << callback
     end
 
