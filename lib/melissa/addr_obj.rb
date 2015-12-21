@@ -46,6 +46,7 @@ module Melissa
     SuiteLinkReturnCode
     ELotNumber
     ELotOrder
+    AddressKey
   )
 
     # See http://www.melissadata.com/lookups/resultcodes.asp
