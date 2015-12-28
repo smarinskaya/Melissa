@@ -86,8 +86,11 @@ the values to validate each other.
               state: 'Fl',
               zip: '33626'
           )
-   #use it to get deliverypoint
+   #delivery_point will return ZIP+4+DeliveryPoint for USPS addresses
    deliverypoint = valid_addr_obj.delivery_point
+   #Address Key is new attribute, added by Melissa data, it will return the value we calculate
+   #in delivery_point attribute for USPS addresses and rooftop level information for non-USPS addresses.   
+   address_key = valid_addr_obj.address_key
 
    #create GeoPoint Object
    geo_point_obj = ::Melissa.geo_point(valid_addr_obj)
@@ -111,6 +114,7 @@ The following rules are used in mocking AddrObj Library:
 1. if zip_code is present, addres object is valid.
 2. to mock delivery point: "#{zip_code}1234#{last 2 digits of zip code}".
    For example, zip_code = 33613     =>    delivery_point = 33613123413
+3. address_key will be mocked the same way as delivery point   
 
 Mocked GeoPoint object will return following values:
 

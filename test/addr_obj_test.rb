@@ -50,6 +50,19 @@ class AddrObjTest < Minitest::Test
         end
       end
 
+      describe 'address_key' do
+        it 'sets address key for valid data' do
+          skip 'Not run, Melissa library not loaded' unless Melissa::AddrObjLive.lib_loaded?
+          valid_address = Melissa.addr_obj(
+            address: '9802 Brompton Dr',
+            city: 'Tampa',
+            state: 'FL',
+            zip: '33626'
+          )
+          assert_equal '33626512502', valid_address.address_key
+        end
+      end
+
       describe 'number of days till licence expires' do
         it 'checks if we have more than 30 days till license expiration date' do
           skip 'Not run, Melissa library not loaded' unless Melissa::AddrObjLive.lib_loaded?
@@ -122,6 +135,18 @@ class AddrObjTest < Minitest::Test
               zip: '33626'
           )
           assert_equal '33626123426', valid_address.delivery_point
+        end
+      end
+
+      describe 'address_key' do
+        it 'sets address key for valid data' do
+          valid_address = Melissa.addr_obj(
+            address: '9802 Brompton Dr',
+            city: 'Tampa',
+            state: 'Fl',
+            zip: '33626'
+          )
+          assert_equal '33626123426', valid_address.address_key
         end
       end
 

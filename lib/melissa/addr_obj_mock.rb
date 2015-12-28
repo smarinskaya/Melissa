@@ -46,5 +46,11 @@ module Melissa
       #we will mock delivery point if zip code is present.
       return self.zip.present?
     end
+
+    #Mock
+    #The Address Key consists of the nine-digit ZIP + 4 (without any dashes), the Delivery Point Code
+    def address_key
+      "#{zip}#{plus4}#{delivery_point_code}"
+    end
   end
 end
