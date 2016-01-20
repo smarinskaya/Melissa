@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    melissa (0.0.7)
+    melissa (0.0.8)
       activesupport
       ffi
       minitest

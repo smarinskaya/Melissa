@@ -50,7 +50,7 @@ module Melissa
   )
 
     # See http://www.melissadata.com/lookups/resultcodes.asp
-    @@good_codes = ['AS01', 'AS02']
+    @@good_codes = ['AS01', 'AS02', 'AS03']
     @@bad_codes = ['AC02', 'AC03']
 
     @@callbacks = ThreadSafe::Array.new
