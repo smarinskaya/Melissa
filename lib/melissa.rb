@@ -6,6 +6,10 @@ require 'melissa/addr_obj_live'
 require 'melissa/geo_point_live'
 require 'melissa/addr_obj_mock'
 require 'melissa/geo_point_mock'
+require 'melissa/web_smart/xml'
+require 'melissa/web_smart/property_api'
+require 'melissa/web_smart/client'
+
 require 'melissa/railtie' if defined?(Rails)
 
 module Melissa

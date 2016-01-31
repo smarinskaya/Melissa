@@ -15,8 +15,12 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Melissa::VERSION
 
-  gem.add_dependency 'activesupport' # added to support underscore method.
-  gem.add_dependency 'minitest'      # added as a dependency of activesupport and for testing.
-  gem.add_dependency 'ffi'           #used for converting c libraries to ruby
-  gem.add_dependency 'thread_safe'   # added to support callbacks
+  gem.add_development_dependency 'pry'
+  gem.add_development_dependency 'minitest'
+
+  gem.add_runtime_dependency 'activesupport'
+  gem.add_runtime_dependency 'ffi'
+  gem.add_runtime_dependency 'thread_safe'
+  gem.add_runtime_dependency 'rest-client'
+  gem.add_runtime_dependency 'nokogiri'
 end
