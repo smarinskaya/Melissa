@@ -1,16 +1,17 @@
 require 'ffi'
+require 'sync_attr'
 
 module Melissa
   class GeoPointLive < GeoPoint
 
-    def self.lib_loaded?
-      return @lib_loaded if defined?(@lib_loaded)
-      extend FFI::Library
+    sync_cattr_reader :lib_loaded do
+      begin
+        extend FFI::Library
 
-      ffi_lib Melissa.config.geo_point_lib
-      attr_functions = @@melissa_attributes.map { |name| ["mdGeoGet#{name}".to_sym, [:pointer], :string] }
+        ffi_lib Melissa.config.geo_point_lib
+        attr_functions = @@melissa_attributes.map { |name| ["mdGeoGet#{name}".to_sym, [:pointer], :string] }
 
-      functions = attr_functions + [
+        functions = attr_functions + [
           # method # parameters        # return
           [:mdGeoCreate, [], :pointer],
           [:mdGeoSetLicenseString, [:pointer, :string], :int],
@@ -22,33 +23,34 @@ module Melissa
           [:mdGeoDestroy, [:pointer], :void],
           [:mdGeoGetLicenseExpirationDate, [:pointer], :string],
           [:mdGeoGetExpirationDate, [:pointer], :string],
-      ]
+        ]
 
-      functions.each do |func|
-        begin
-          attach_function(*func)
-        rescue Object => e
-          raise "Could not attach #{func}, #{e.message}"
+        functions.each do |func|
+          begin
+            attach_function(*func)
+          rescue Object => e
+            raise "Could not attach #{func}, #{e.message}"
+          end
         end
-      end
 
-      attr_reader *@@melissa_attributes.map { |name| name.underscore.to_sym }
+        attr_reader *@@melissa_attributes.map { |name| name.underscore.to_sym }
 
-      # Get all the attributes out up-front so we can destroy the mdGeo object
-      class_eval <<-EOS
+        # Get all the attributes out up-front so we can destroy the mdGeo object
+        class_eval <<-EOS
         define_method(:fill_attributes) do |mdGeo|
           #{@@melissa_attributes.map { |name| "@#{name.underscore} = mdGeoGet#{name}(mdGeo)" }.join("\n")}
         end
-      EOS
-    rescue LoadError => e
-      puts "WARNING: #{Melissa.config.geo_point_lib} could not be loaded"
-      return @lib_loaded = false
-    else
-      return @lib_loaded = true
+        EOS
+      rescue LoadError => e
+        puts "WARNING: #{Melissa.config.geo_point_lib} could not be loaded"
+        @lib_loaded = false
+      else
+        @lib_loaded = true
+      end
     end
 
     def self.with_mdgeo
-      raise "Unable to load melissa library #{Melissa.config.addr_obj_lib}" unless self.lib_loaded?
+      raise "Unable to load melissa library #{Melissa.config.addr_obj_lib}" unless lib_loaded
       raise "Unable to find the license for Melissa Data library #{Melissa.config.license}" unless Melissa.config.license.present?
       raise "Unable to find data files for Melissa Data library #{Melissa.config.data_path}" unless Melissa.config.data_path.present?
       begin
@@ -82,7 +84,7 @@ module Melissa
     # date when the current data files expire. This date enables you to confirm that the
     # data files you are using are the latest available.
     def self.expiration_date
-      Date.parse(with_mdgeo { |mdGeo| mdGeoGetExpirationDate(mdGeo)})
+      Date.parse(with_mdgeo { |mdGeo| mdGeoGetExpirationDate(mdGeo) })
     end
 
     def self.days_until_data_expiration
@@ -103,8 +105,8 @@ module Melissa
           raise "Invalid call to GeoPoint, unknown object #{opts.inspect}"
         end
         @resultcodes = mdGeoGetResults(mdGeo).split(',')
-        fatals = @resultcodes & @@fatal_codes
-        @is_valid = fatals.blank?
+        fatals       = @resultcodes & @@fatal_codes
+        @is_valid    = fatals.blank?
         if @is_valid
           fill_attributes(mdGeo)
           # Convert from strings to actual types
@@ -119,9 +121,9 @@ module Melissa
             @longitude = @longitude.to_f
           end
           if @latitude == 0.0 && @longitude == 0.0
-            @latitude = nil
+            @latitude  = nil
             @longitude = nil
-            @is_valid = false
+            @is_valid  = false
           end
         else
           fatals.each do |fatal_code|

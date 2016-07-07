@@ -1,16 +1,17 @@
 require 'ffi'
+require 'sync_attr'
 
 module Melissa
   class AddrObjLive < AddrObj
 
-    def self.lib_loaded?
-      return @lib_loaded if defined?(@lib_loaded)
-      extend FFI::Library
+    sync_cattr_reader :lib_loaded do
+      begin
+        extend FFI::Library
 
-      ffi_lib Melissa.config.addr_obj_lib
-      attr_functions = @@melissa_attributes.map { |name| ["mdAddrGet#{name}".to_sym, [:pointer], :string] }
+        ffi_lib Melissa.config.addr_obj_lib
+        attr_functions = @@melissa_attributes.map { |name| ["mdAddrGet#{name}".to_sym, [:pointer], :string] }
 
-      functions = attr_functions + [
+        functions = attr_functions + [
           # method # parameters        # return
           [:mdAddrCreate, [], :pointer],
           [:mdAddrSetLicenseString, [:pointer, :string], :int],
@@ -31,33 +32,34 @@ module Melissa
           [:mdAddrDestroy, [:pointer], :void],
           [:mdAddrGetLicenseExpirationDate, [:pointer], :string],
           [:mdAddrGetExpirationDate, [:pointer], :string],
-      ]
+        ]
 
-      functions.each do |func|
-        begin
-          attach_function(*func)
-        rescue Object => e
-          raise "Could not attach #{func}, #{e.message}"
+        functions.each do |func|
+          begin
+            attach_function(*func)
+          rescue Object => e
+            raise "Could not attach #{func}, #{e.message}"
+          end
         end
-      end
 
-      attr_reader *@@melissa_attributes.map { |name| name.underscore.to_sym }
+        attr_reader *@@melissa_attributes.map { |name| name.underscore.to_sym }
 
-      # Get all the attributes out up-front so we can destroy the h_addr_lib object
-      class_eval <<-EOS
+        # Get all the attributes out up-front so we can destroy the h_addr_lib object
+        class_eval <<-EOS
         define_method(:fill_attributes) do |h_addr_lib|
           #{@@melissa_attributes.map { |name| "@#{name.underscore} = mdAddrGet#{name}(h_addr_lib)" }.join("\n")}
         end
-      EOS
-    rescue LoadError => e
-      puts "WARNING: #{Melissa.config.addr_obj_lib} could not be loaded"
-      return @lib_loaded = false
-    else
-      return @lib_loaded = true
+        EOS
+      rescue LoadError => e
+        puts "WARNING: #{Melissa.config.addr_obj_lib} could not be loaded"
+        @lib_loaded = false
+      else
+        @lib_loaded = true
+      end
     end
 
     def self.with_mdaddr
-      raise "Unable to load melissa library #{Melissa.config.addr_obj_lib}" unless self.lib_loaded?
+      raise "Unable to load melissa library #{Melissa.config.addr_obj_lib}" unless lib_loaded
       raise "Unable to find the license for Melissa Data library #{Melissa.config.license}" unless Melissa.config.license.present?
       raise "Unable to find data files for Melissa Data library #{Melissa.config.data_path}" unless Melissa.config.data_path.present?
       begin
@@ -84,9 +86,9 @@ module Melissa
       (self.license_expiration_date - Date.today).to_i
     end
 
-   # U.S. Only — This function returns a date value representing the
-   # date when the current U.S. data files expire. This date enables you to confirm that the
-   # data files you are using are the latest available.
+    # U.S. Only — This function returns a date value representing the
+    # date when the current U.S. data files expire. This date enables you to confirm that the
+    # data files you are using are the latest available.
 
     def self.data_expiration_date
       Date.strptime(with_mdaddr { |h_addr_lib| mdAddrGetExpirationDate(h_addr_lib) }, '%m-%d-%Y')

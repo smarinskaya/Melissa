@@ -10,7 +10,7 @@ class GeoPointTest < Minitest::Test
 
       describe 'valid?' do
         it 'creates valid GeoPoint object from valid Address Object' do
-          skip 'Not run, Melissa library not loaded' unless Melissa::GeoPointLive.lib_loaded?
+          skip 'Not run, Melissa library not loaded' unless Melissa::GeoPointLive.lib_loaded
           valid_addr_obj = Melissa.addr_obj(
             address: '2517 SURFWOOD DR',
             city:    'LAS VEGAS',
@@ -25,7 +25,7 @@ class GeoPointTest < Minitest::Test
           assert_equal offset, geo_point_obj.time_zone_offset(valid_addr_obj.state)
         end
         it 'creates valid GeoPoint object from the Hash' do
-          skip 'Not run, Melissa library not loaded' unless Melissa::GeoPointLive.lib_loaded?
+          skip 'Not run, Melissa library not loaded' unless Melissa::GeoPointLive.lib_loaded
           geo_point_obj= Melissa.geo_point(
             zip:                 '89128',
             plus4:               '7182',
@@ -42,7 +42,7 @@ class GeoPointTest < Minitest::Test
 
       describe 'number of days till licence expires' do
         it 'checks if we have more than 30 days till license expiration date' do
-          skip 'Not run, Melissa library not loaded' unless Melissa::GeoPointLive.lib_loaded?
+          skip 'Not run, Melissa library not loaded' unless Melissa::GeoPointLive.lib_loaded
           valid_addr_obj = Melissa.addr_obj(
             address: '2517 SURFWOOD DR',
             city:    'LAS VEGAS',
@@ -56,7 +56,7 @@ class GeoPointTest < Minitest::Test
 
       describe 'callback' do
         it 'executes added callback' do
-          skip 'Not run, Melissa library not loaded' unless Melissa::GeoPointLive.lib_loaded?
+          skip 'Not run, Melissa library not loaded' unless Melissa::GeoPointLive.lib_loaded
           callback_flag = false
           Melissa::GeoPoint.add_callback do
             callback_flag = true
