@@ -60,7 +60,7 @@ module Melissa
         mdGeoSetPathToGeoPointDataFiles(mdGeo, Melissa.config.data_path)
         result = mdGeoInitializeDataFiles(mdGeo)
         if result != 0
-          raise mdGeoGetInitializeErrorString(mdGeo)
+          raise "Unable to initialize data files for Melissa Data library #{Melissa.config.data_path}"
         end
         yield mdGeo
       ensure
