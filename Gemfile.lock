@@ -2,11 +2,11 @@ PATH
   remote: .
   specs:
     melissa (0.0.9b)
-      activesupport
+      activesupport (~> 4.2.1)
+      concurrent-ruby
       ffi
       minitest
       sync_attr
-      thread_safe
 
 GEM
   remote: https://rubygems.org/
@@ -19,6 +19,7 @@ GEM
       tzinfo (~> 1.1)
     ansi (1.5.0)
     builder (3.2.2)
+    concurrent-ruby (1.0.2)
     ffi (1.9.8)
     i18n (0.7.0)
     json (1.8.2)

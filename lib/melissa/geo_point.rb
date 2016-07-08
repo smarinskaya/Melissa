@@ -39,7 +39,7 @@ module Melissa
     #@@bad_codes   = ['GE01', 'GE02']
     @@fatal_codes = ['GE03', 'GE04', 'GE05']
 
-    @@callbacks = ThreadSafe::Array.new
+    @@callbacks = Concurrent::Array.new
 
     # Allow callbacks to intercept response and perform whatever misc stuff (hint: victim_statements)
     def self.add_callback(&callback)

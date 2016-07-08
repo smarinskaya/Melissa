@@ -1,4 +1,5 @@
 require 'active_support/all' #TODO I can narrow down this
+require 'concurrent'
 
 module Melissa
   class AddrObj
@@ -53,7 +54,7 @@ module Melissa
     @@good_codes = ['AS01', 'AS02', 'AS03']
     @@bad_codes = ['AC02', 'AC03']
 
-    @@callbacks = ThreadSafe::Array.new
+    @@callbacks = Concurrent::Array.new
 
     # Allow callbacks to intercept response and perform whatever misc stuff (hint: victim_statements)
     def self.add_callback(&callback)
