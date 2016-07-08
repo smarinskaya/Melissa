@@ -1,4 +1,5 @@
 require "melissa/config"
+require 'concurrent'
 
 module Melissa
   class GeoPoint
