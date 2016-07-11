@@ -15,8 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Melissa::VERSION
 
-  # Don't want to upgrade to '5.0.0' yet.
-  gem.add_dependency 'activesupport', '~> 4.2.1'  # added to support underscore method.
+  gem.add_dependency 'activesupport'              # added to support underscore method.
   gem.add_dependency 'minitest'                   # added as a dependency of activesupport and for testing.
   gem.add_dependency 'ffi'                        # used for converting c libraries to ruby
   gem.add_dependency 'concurrent-ruby'            # added to support concurrent callbacks
