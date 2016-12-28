@@ -2,7 +2,6 @@ language: ruby
 rvm:
   - 2.2.1
   - jruby-1.7
-  - rbx-2
 
 script:
   - bundle exec rake test
